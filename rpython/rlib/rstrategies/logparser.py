@@ -459,7 +459,7 @@ class StorageGraph(object):
         self.assert_sanity()
 
     def collapse_nonstorage_nodes(self, new_name=None):
-        nodes = filter(lambda x: not x.is_storage_node(), self.nodes.values())
+        nodes = list(filter(lambda x: not x.is_storage_node(), self.nodes.values()))
         self.collapse_nodes(nodes, new_name)
 
     def sorted_nodes(self):
@@ -624,8 +624,7 @@ def command_aggregate(logfile, flags):
     graph = make_graph(logfile, flags)
     edges = sorted(graph.edges.values())
     for edge in edges:
-        logentries = edge.as_log_entries()
-        logentries.sort()
+        logentries = sorted(edge.as_log_entries())
         for entry in logentries:
             print(entry)
 
