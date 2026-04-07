@@ -139,8 +139,8 @@ def test_remove_duplicate_casts():
     assert changed
     ops = getops(graph)
     assert len(ops['cast_pointer']) < num_cast_pointer
-    print len(ops['cast_pointer']), num_cast_pointer
-    graph_getsum = graphof(t, B.getsum.im_func)
+    print(len(ops['cast_pointer']), num_cast_pointer)
+    graph_getsum = graphof(t, B.getsum.__func__)
     num_cast_pointer = len(getops(graph_getsum)['cast_pointer'])
     changed = remove_duplicate_casts(graph_getsum, t)
     assert changed
@@ -149,5 +149,5 @@ def test_remove_duplicate_casts():
     check_graph(graph, [10, True], 75, t)
     ops = getops(graph_getsum)
     assert len(ops['cast_pointer']) < num_cast_pointer
-    print len(ops['cast_pointer']), num_cast_pointer
+    print(len(ops['cast_pointer']), num_cast_pointer)
     

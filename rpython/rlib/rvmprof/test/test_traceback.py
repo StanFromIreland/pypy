@@ -51,7 +51,7 @@ def _test_compiled():
             lltype.free(p, flavor='raw')
 
     def my_callback(code, loc, arg):
-        print code, loc, arg
+        print(code, loc, arg)
         return 0
 
     def f(argv):
@@ -92,7 +92,7 @@ def _test_jitted():
             lltype.free(p, flavor='raw')
 
     def my_callback(code, loc, arg):
-        print code, loc, arg
+        print(code, loc, arg)
         return 0
 
     def f(argv):

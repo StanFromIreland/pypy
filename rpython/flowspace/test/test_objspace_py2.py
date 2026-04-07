@@ -25,13 +25,13 @@ class TestFlowObjSpacePy2(Base):
 
     #__________________________________________________________
     def print_(i):
-        print i
+        print(i)
 
     def test_print(self):
         x = self.codetest(self.print_)
 
     def test_bad_print(self):
         def f(x):
-            print >> x, "Hello"
+            print("Hello", file=x)
         with py.test.raises(FlowingError):
             self.codetest(f)

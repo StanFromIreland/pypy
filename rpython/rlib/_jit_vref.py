@@ -32,7 +32,8 @@ class SomeVRef(annmodel.SomeObject):
 
 class __extend__(pairtype(SomeVRef, SomeVRef)):
 
-    def union((vref1, vref2)):
+    def union(_tup0):
+        vref1, vref2 = _tup0
         return SomeVRef(annmodel.unionof(vref1.s_instance, vref2.s_instance))
 
 

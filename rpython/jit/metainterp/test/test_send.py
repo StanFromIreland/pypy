@@ -340,7 +340,7 @@ class SendTests(object):
                 y -= 1
             return x
         res = self.meta_interp(f, [198],
-                               policy=StopAtXPolicy(State.externfn.im_func))
+                               policy=StopAtXPolicy(State.externfn.__func__))
         assert res == f(198)
         # we get two TargetTokens, one for the loop and one for the preamble
         self.check_jitcell_token_count(1)
@@ -377,7 +377,7 @@ class SendTests(object):
                 y -= 1
             return x
         res = self.meta_interp(f, [198],
-                               policy=StopAtXPolicy(State.externfn.im_func))
+                               policy=StopAtXPolicy(State.externfn.__func__))
         assert res == f(198)
         # we get four TargetTokens: one for each of the 3 getvalue functions,
         # and one entering from the interpreter (the preamble)
@@ -554,7 +554,7 @@ class SendTests(object):
                 i-=1
             return res
 
-        policy = StopAtXPolicy(new, A.foo.im_func, B.foo.im_func)
+        policy = StopAtXPolicy(new, A.foo.__func__, B.foo.__func__)
         res = self.meta_interp(fn, [0, 20], policy=policy)
         assert res == 42
         self.check_resops(call_i=2)
@@ -582,7 +582,7 @@ class SendTests(object):
                 res = obj.foo(pbc)
                 i-=1
             return res
-        policy = StopAtXPolicy(new, A.foo.im_func)
+        policy = StopAtXPolicy(new, A.foo.__func__)
         res = self.meta_interp(fn, [1, 20], policy=policy)
         assert res == 41
         self.check_resops(call_i=2)
@@ -603,7 +603,7 @@ class SendTests(object):
                 res = obj.foo()
                 i-=1
             return res
-        policy = StopAtXPolicy(A.foo.im_func)
+        policy = StopAtXPolicy(A.foo.__func__)
         res = self.meta_interp(fn, [1, 20], policy=policy)
         assert res == 42
         self.check_resops(call=0)

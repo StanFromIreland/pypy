@@ -264,7 +264,7 @@ class TestMatch:
 
     def test_simple_match_1(self):
         r = get_code(r"ab*bbbbbbbc")
-        print r
+        print(r)
         m = match(r, "abbbbbbbbbcdef")
         assert m
         assert m.match_end == P(11)

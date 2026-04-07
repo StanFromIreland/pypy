@@ -15,7 +15,7 @@ def check_valid(graph, regalloc, consider_var):
     for block in graph.iterblocks():
         inputs = [v for v in block.inputargs if consider_var(v)]
         colors = [regalloc.getcolor(v) for v in inputs]
-        print inputs, ':', colors
+        print(inputs, ':', colors)
         assert len(inputs) == len(set(colors))
         in_use = dict(zip(colors, inputs))
         for op in block.operations:
@@ -30,8 +30,8 @@ def check_valid(graph, regalloc, consider_var):
                     assert in_use[regalloc.getcolor(v)] is v
                     w = link.target.inputargs[i]
                     if regalloc.getcolor(v) is not regalloc.getcolor(w):
-                        print '\trenaming %s:%d -> %s:%d' % (
-                            v, regalloc.getcolor(v), w, regalloc.getcolor(w))
+                        print('\trenaming %s:%d -> %s:%d' % (
+                            v, regalloc.getcolor(v), w, regalloc.getcolor(w)))
                         num_renamings += 1
     return num_renamings
 

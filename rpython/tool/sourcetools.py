@@ -199,8 +199,7 @@ def compile_template(source, resultname):
     if locals is caller.f_globals:
         localnames = []
     else:
-        localnames = locals.keys()
-        localnames.sort()
+        localnames = sorted(locals.keys())
     values = [locals[key] for key in localnames]
 
     source = source.putaround(
@@ -277,7 +276,7 @@ def rpython_wrapper(f, template, templateargs=None, **globaldict):
     """
     if templateargs is None:
         templateargs = {}
-    srcargs, srcvarargs, srckeywords, defaults = inspect.getargspec(f)
+    srcargs, srcvarargs, srckeywords, defaults, *_ = inspect.getfullargspec(f)
     assert not srcvarargs, '*args not supported by rpython_wrapper'
     assert not srckeywords, '**kwargs not supported by rpython_wrapper'
     #

@@ -549,7 +549,7 @@ def remove_identical_vars_SSA(graph):
     entrymap.pop(graph.exceptblock, None)
     inputs = {}
     for block, links in entrymap.items():
-        phis = zip(block.inputargs, zip(*[link.args for link in links]))
+        phis = list(zip(block.inputargs, zip(*[link.args for link in links])))
         inputs[block] = phis
 
     def simplify_phis(block):

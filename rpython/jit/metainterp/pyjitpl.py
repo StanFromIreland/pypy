@@ -3868,7 +3868,7 @@ def _get_opimpl_method(name, argcodes):
         elif not we_are_translated():
             assert self._result_argcode in 'v?' or 'ovf' in name
     #
-    unboundmethod = getattr(MIFrame, 'opimpl_' + name).im_func
+    unboundmethod = getattr(MIFrame, 'opimpl_' + name).__func__
     argtypes = unrolling_iterable(unboundmethod.argtypes)
     handler.__name__ = 'handler_' + name
     return handler

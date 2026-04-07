@@ -53,6 +53,8 @@ class Signature(object):
                 self.varargname == other.varargname and
                 self.kwargname == other.kwargname)
 
+    __hash__ = object.__hash__
+
     def __ne__(self, other):
         if not isinstance(other, Signature):
             return NotImplemented
@@ -113,7 +115,8 @@ class CallSpec(object):
             return self.arguments_w + [const(x) for x in self.w_stararg.value]
 
     @classmethod
-    def fromshape(cls, (shape_cnt, shape_keys, shape_star), data_w):
+    def fromshape(cls, _tup0, data_w):
+        shape_cnt, shape_keys, shape_star = _tup0
         args_w = data_w[:shape_cnt]
         p = end_keys = shape_cnt + len(shape_keys)
         if shape_star:

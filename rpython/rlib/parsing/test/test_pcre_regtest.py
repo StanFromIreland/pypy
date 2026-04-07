@@ -214,7 +214,7 @@ def create_pcre_pickle(file, dumper):
                 test = unescape(test)
             except Exception:
                 disqualify_test = True
-                print "Warning: could not unescape %r" % test
+                print("Warning: could not unescape %r" % test)
                 
 
             # Third line in the OUTPUT is the result, either:
@@ -239,7 +239,7 @@ def create_pcre_pickle(file, dumper):
                             break
                     break
                 elif not match:
-                    print " *** %r ***" % match
+                    print(" *** %r ***" % match)
                     raise Exception("Lost sync in output.")
             if not disqualify_test:
                 tests.append((test,match))
@@ -267,13 +267,13 @@ def run_individual_test(regex, tests):
         #print "  SKIPPED (Cant do blank regex)"
         return
     
-    print "%s:" % regex_to_use
+    print("%s:" % regex_to_use)
     
     runner = make_runner(regex_to_use)
     
     # Now run the test expressions against the Regex
     for test, match in tests:
-        print "/%r/%r/" % (test, match)
+        print("/%r/%r/" % (test, match))
         
         # Create possible subsequences that we should test
         if anchor_left:

@@ -190,9 +190,9 @@ class TestNormalize(object):
             return x.fn()
 
         translator = self.rtype(dummyfn, [int], int)
-        base_graph = graphof(translator, Base.fn.im_func)
-        sub1_graph = graphof(translator, Sub1.fn.im_func)
-        sub2_graph = graphof(translator, Sub2.fn.im_func)
+        base_graph = graphof(translator, Base.fn.__func__)
+        sub1_graph = graphof(translator, Sub1.fn.__func__)
+        sub2_graph = graphof(translator, Sub2.fn.__func__)
         assert base_graph.getreturnvar().concretetype == lltype.Signed
         assert sub1_graph.getreturnvar().concretetype == lltype.Signed
         assert sub2_graph.getreturnvar().concretetype == lltype.Signed
@@ -332,10 +332,10 @@ class TestNormalizeAfterTheFact(TestNormalize):
             assert not ll_issubclass(base_vtable, sub3_vtable)
 
         translator = self.rtype(dummyfn, [int], int, checkfunction)
-        base_graph    = graphof(translator, PBase.fn.im_func)
-        sub1_graph    = graphof(translator, PSub1.fn.im_func)
-        sub2_graph    = graphof(translator, PSub2.fn.im_func)
-        sub3_graph    = graphof(translator, Sub3.fn.im_func)
+        base_graph    = graphof(translator, PBase.fn.__func__)
+        sub1_graph    = graphof(translator, PSub1.fn.__func__)
+        sub2_graph    = graphof(translator, PSub2.fn.__func__)
+        sub3_graph    = graphof(translator, Sub3.fn.__func__)
         dummyfn_graph = graphof(translator, dummyfn)
         assert base_graph.getreturnvar().concretetype == lltype.Signed
         assert sub1_graph.getreturnvar().concretetype == lltype.Signed

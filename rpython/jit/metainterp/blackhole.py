@@ -235,7 +235,7 @@ class BlackholeInterpBuilder(object):
         # it means that either the implementation is missing, or that it
         # should not appear here at all but instead be transformed away
         # by codewriter/jtransform.py.
-        unboundmethod = getattr(BlackholeInterpreter, 'bhimpl_' + name).im_func
+        unboundmethod = getattr(BlackholeInterpreter, 'bhimpl_' + name).__func__
         verbose = self.verbose
         argtypes = unrolling_iterable(unboundmethod.argtypes)
         resulttype = unboundmethod.resulttype

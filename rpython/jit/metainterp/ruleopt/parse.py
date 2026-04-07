@@ -90,6 +90,8 @@ class BaseAst(BaseBox):
             return NotImplemented
         return self.__dict__ == other.__dict__
 
+    __hash__ = object.__hash__
+
     def __ne__(self, other):
         return not self == other
 
@@ -628,12 +630,12 @@ def print_conflicts():
     if parser.lr_table.rr_conflicts:
         print("rr conflicts")
     for rule_num, token, conflict in parser.lr_table.rr_conflicts:
-        print(rule_num, token, conflict)
+        print((rule_num, token, conflict))
 
     if parser.lr_table.sr_conflicts:
         print("sr conflicts")
     for rule_num, token, conflict in parser.lr_table.sr_conflicts:
-        print(rule_num, token, conflict)
+        print((rule_num, token, conflict))
 
 
 parser = pg.build()

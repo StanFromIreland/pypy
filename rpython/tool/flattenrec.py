@@ -4,7 +4,7 @@ parts until later.
 """
 
 try:
-    from thread import _local as TlsClass
+    from _thread import _local as TlsClass
 except ImportError:
     class TlsClass(object):
         pass

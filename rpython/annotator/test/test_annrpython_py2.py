@@ -31,7 +31,7 @@ class TestAnnotateTestCase:
         # check that the list produced by range() is not mutated or resized
         graph = graphof(a, snippet.harmonic)
         all_vars = set().union(*[block.getvariables() for block in graph.iterblocks()])
-        print all_vars
+        print(all_vars)
         for var in all_vars:
             s_value = var.annotation
             if isinstance(s_value, annmodel.SomeList):
@@ -40,7 +40,7 @@ class TestAnnotateTestCase:
                 assert s_value.listdef.listitem.range_step
 
     def test_prebuilt_long_that_is_not_too_long(self):
-        small_constant = 12L
+        small_constant = 12
         def f():
             return small_constant
         a = self.RPythonAnnotator()
@@ -49,7 +49,7 @@ class TestAnnotateTestCase:
         assert s.nonneg
         assert not s.unsigned
         #
-        small_constant = -23L
+        small_constant = -23
         def f():
             return small_constant
         a = self.RPythonAnnotator()
@@ -70,7 +70,7 @@ class TestAnnotateTestCase:
                 x1 = x
             else:
                 x1 = None
-            print "hello"  # this is to force the merge of blocks
+            print("hello")  # this is to force the merge of blocks
             return isinstance(x1, X)
 
         a = self.RPythonAnnotator()

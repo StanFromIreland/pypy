@@ -52,19 +52,19 @@ def play_with_r_dict(d):
     assert lst[0][0] == 'hello' and lst[0][1] == 42
 
     count = 0
-    for x in d.iterkeys():
+    for x in d.keys():
         assert x == 'hello'
         count += 1
     assert count == 1
 
     count = 0
-    for x in d.itervalues():
+    for x in d.values():
         assert x == 42
         count += 1
     assert count == 1
 
     count = 0
-    for x in d.iteritems():
+    for x in d.items():
         assert len(x) == 2 and x[0] == 'hello' and x[1] == 42
         count += 1
     assert count == 1
@@ -115,8 +115,8 @@ def test_annotate_r_dict_bm():
     a = t.buildannotator()
     a.build_types(func_r_dict_bm, [])
     #t.view()
-    strange_key_eq = Strange.key_eq.im_func
-    strange_key_hash = Strange.key_hash.im_func
+    strange_key_eq = Strange.key_eq.__func__
+    strange_key_hash = Strange.key_hash.__func__
 
     Strange_def = a.bookkeeper.getuniqueclassdef(Strange)
 
@@ -743,28 +743,28 @@ def test_import_from_mixin():
             pass
     class A:    # old-style
         import_from_mixin(M)
-    assert A.f.im_func is not M.f.im_func
+    assert A.f.__func__ is not M.f.__func__
 
     class M(object):
         def f(self):
             pass
     class A:    # old-style
         import_from_mixin(M)
-    assert A.f.im_func is not M.f.im_func
+    assert A.f.__func__ is not M.f.__func__
 
     class M:    # old-style
         def f(self):
             pass
     class A(object):
         import_from_mixin(M)
-    assert A.f.im_func is not M.f.im_func
+    assert A.f.__func__ is not M.f.__func__
 
     class M(object):
         def f(self):
             pass
     class A(object):
         import_from_mixin(M)
-    assert A.f.im_func is not M.f.im_func
+    assert A.f.__func__ is not M.f.__func__
 
     class MBase(object):
         a = 42
@@ -784,9 +784,9 @@ def test_import_from_mixin():
         import_from_mixin(M)
         c = 88
 
-    assert A.f.im_func is not M.f.im_func
-    assert A.f.im_func is not MBase.f.im_func
-    assert A.g.im_func is not MBase.g.im_func
+    assert A.f.__func__ is not M.f.__func__
+    assert A.f.__func__ is not MBase.f.__func__
+    assert A.g.__func__ is not MBase.g.__func__
     assert A().f() == "there"
     assert A.a == 84
     assert A.b == 43

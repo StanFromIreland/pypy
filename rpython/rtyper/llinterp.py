@@ -1,6 +1,6 @@
 from __future__ import print_function
 
-import cStringIO
+import io
 import os
 import sys
 import traceback
@@ -43,7 +43,7 @@ class LLException(Exception):
         etype = self.args[0]
         #evalue = self.args[1]
         if len(self.args) > 2:
-            f = cStringIO.StringIO()
+            f = io.StringIO()
             original_type, original_value, original_tb = self.args[2]
             traceback.print_exception(original_type, original_value, original_tb,
                                       file=f)
@@ -470,12 +470,12 @@ class LLFrame(object):
                                 TypeError, NameError,
                                 KeyboardInterrupt, SystemExit,
                                 ImportError, SyntaxError)):
-                raise original[0], original[1], original[2]     # re-raise it
+                raise original[0](original[1]).with_traceback(original[2])     # re-raise it
             # for testing the JIT (see ContinueRunningNormally) we need
             # to let some exceptions introduced by the JIT go through
             # the llinterpreter uncaught
             if getattr(exc, '_go_through_llinterp_uncaught_', False):
-                raise original[0], original[1], original[2]     # re-raise it
+                raise original[0](original[1]).with_traceback(original[2])     # re-raise it
             extraargs = (original,)
         else:
             extraargs = ()
@@ -1315,8 +1315,8 @@ class Tracer(object):
     def htmlquote(self, s, text_to_html={}):
         # HTML quoting, lazily initialized
         if not text_to_html:
-            import htmlentitydefs
-            for key, value in htmlentitydefs.entitydefs.items():
+            import html.entities
+            for key, value in html.entities.entitydefs.items():
                 text_to_html[value] = '&' + key + ';'
         return ''.join([text_to_html.get(c, c) for c in s])
 

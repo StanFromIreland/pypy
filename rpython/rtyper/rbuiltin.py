@@ -142,7 +142,8 @@ class BuiltinMethodRepr(Repr):
         return bltintyper(hop2)
 
 class __extend__(pairtype(BuiltinMethodRepr, BuiltinMethodRepr)):
-    def convert_from_to((r_from, r_to), v, llops):
+    def convert_from_to(_tup0, v, llops):
+        r_from, r_to = _tup0
         # convert between two MethodReprs only if they are about the same
         # methodname.  (Useful for the case r_from.s_self == r_to.s_self but
         # r_from is not r_to.)  See test_rbuiltin.test_method_repr.

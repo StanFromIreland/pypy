@@ -157,7 +157,7 @@ class ImmutableFieldsTests:
             return [f1, f2][m]
         @jit.dont_look_inside
         def do_stuff_with(n):
-            print n
+            print(n)
         def main(m):
             f = some(m)
             n = f.n
@@ -180,7 +180,7 @@ class ImmutableFieldsTests:
             return [f1, f2][m]
         @jit.dont_look_inside
         def do_stuff_with(n):
-            print n
+            print(n)
         def main(m):
             f = some(m)
             n = f.lst[0]

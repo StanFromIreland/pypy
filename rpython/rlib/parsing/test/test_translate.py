@@ -15,7 +15,7 @@ def test_translate_parser():
                         for i, c in enumerate(list("2*(3+4)") + ["EOF"])])
     data = [Token(c, i, SourcePos(i, 0, i))
                 for i, c in enumerate(list("2*(3+4)") + ["EOF"])]
-    print tree
+    print(tree)
 
     def parse(choose):
         tree = p.parse(data, lazy=False)
@@ -41,7 +41,7 @@ def test_translate_compiled_parser():
                         for i, c in enumerate(list("2*(3+4)") + ["EOF"])])
     data = [Token(c, i, SourcePos(i, 0, i))
                for i, c in enumerate(list("2*(3+4)") + ["EOF"])]
-    print tree
+    print(tree)
     p = kls()
 
     def parse(choose):
@@ -100,7 +100,7 @@ def test_translate_pypackrat():
             ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9');
         """
 
-    print parser._code
+    print(parser._code)
 
     def parse(s):
         p = parser(s)
@@ -121,7 +121,7 @@ def test_translate_pypackrat_regex():
             `([1-9][0-9]*)|0`;
         """
 
-    print parser._code
+    print(parser._code)
 
     def parse(s):
         p = parser(s)

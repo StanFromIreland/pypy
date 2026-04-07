@@ -80,8 +80,9 @@ class GroupMemberOffset(llmemory.Symbolic):
         return '%s(%s, %s)' % (self.__class__.__name__,
                                self.grpptr, self.index)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
+
 
     def _get_group_member(self, grpptr):
         assert grpptr == self.grpptr, "get_group_member: wrong group!"
@@ -124,8 +125,9 @@ class CombinedSymbolic(llmemory.Symbolic):
     def __repr__(self):
         return '<CombinedSymbolic %r|%s>' % (self.lowpart, self.rest)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
+
 
     def __and__(self, other):
         if (other & CombinedSymbolic.MASK) == 0:
@@ -156,6 +158,8 @@ class CombinedSymbolic(llmemory.Symbolic):
             return self.rest == other.rest
         else:
             return NotImplemented
+
+    __hash__ = object.__hash__
 
     def __ne__(self, other):
         if (isinstance(other, CombinedSymbolic) and

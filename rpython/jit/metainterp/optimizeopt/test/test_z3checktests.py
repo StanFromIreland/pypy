@@ -210,14 +210,14 @@ class Checker(object):
         return heap
 
     def print_chunk(self, chunk, label, model):
-        print
-        print "=============", label, "=================="
+        print()
+        print("=============", label, "==================")
         for op in chunk:
             if op in self.box_to_z3:
                 text = "-----> " + hex(intmask(r_uint(int(str(model[self.box_to_z3[op]])))))
             else:
                 text = ""
-            print op, text
+            print(op, text)
 
     def prove(self, cond, *ops):
         z3res = self.solver.check(z3.Not(cond))
@@ -229,24 +229,24 @@ class Checker(object):
             # not possible to prove!
             # print some nice stuff
             model = self.solver.model()
-            print "ERROR counterexample:"
-            print "inputs:"
+            print("ERROR counterexample:")
+            print("inputs:")
             for beforeinput, afterinput in zip(self.beforeinputargs, self.afterinputargs):
                 if model[self.box_to_z3[beforeinput]] is not None:
-                    print beforeinput, afterinput, hex(intmask(r_uint(int(str(model[self.box_to_z3[beforeinput]])))))
+                    print(beforeinput, afterinput, hex(intmask(r_uint(int(str(model[self.box_to_z3[beforeinput]]))))))
                 else:
-                    print beforeinput, afterinput, "unassigned in the model"
-            print "chunks:"
+                    print(beforeinput, afterinput, "unassigned in the model")
+            print("chunks:")
             for i, chunk in enumerate(self.chunks):
                 beforechunk, beforelast, afterchunk, afterlast = chunk
                 if i == self.chunkindex:
-                    print "vvvvvvvvvvvvvvv Problem vvvvvvvvvvvvvvv"
+                    print("vvvvvvvvvvvvvvv Problem vvvvvvvvvvvvvvv")
                 self.print_chunk(beforechunk + [beforelast], "before", model)
                 self.print_chunk(afterchunk + [afterlast], "after", model)
-                print
+                print()
                 if i == self.chunkindex:
                     break
-            print "END counterexample"
+            print("END counterexample")
 
             # raise error
             l = []
@@ -554,10 +554,10 @@ class Checker(object):
         return isinstance(arg, Const) or isinstance(arg, ConstPtr)
 
     def fresh_pointer(self, res):
-        for box, var in self.box_to_z3.iteritems():
+        for box, var in self.box_to_z3.items():
             if box.type == "r" and res is not var:
                 self.solver_add(res != var)
-        for const, z3var in self.constptr_to_z3.iteritems():
+        for const, z3var in self.constptr_to_z3.items():
             self.solver_add(res != z3var)
         self.fresh_pointers.append(res)
 
@@ -714,7 +714,7 @@ class BaseCheckZ3(BaseTest):
         beforeinputargs, beforeops = trace.unpack()
         # check that the generated trace is correct
         correct, timeout = check_z3(beforeinputargs, beforeops, info.inputargs, ops)
-        print 'correct conditions:', correct, 'timed out conditions:', timeout
+        print('correct conditions:', correct, 'timed out conditions:', timeout)
 
 
 class TestBuggyTestsFail(BaseCheckZ3):
@@ -894,28 +894,28 @@ class TestOptimizeIntBoundsZ3(BaseCheckZ3, TOptimizeIntBounds):
             enable_opts=self.enable_opts)
         jitdriver_sd = FakeJitDriverStaticData()
         info, ops = compile_data.optimize_trace(self.metainterp_sd, jitdriver_sd, {})
-        print info.inputargs
+        print(info.inputargs)
         for op in ops:
-            print op
+            print(op)
         beforeinputargs, beforeops = trace.unpack()
         # check that the generated trace is correct
         t2 = time.time()
         try:
             correct, timeout = check_z3(beforeinputargs, beforeops, info.inputargs, ops)
         except CheckError:
-            print "to reproduce:"
-            print "_" * 60
-            print make_reproducer(output.getvalue())
-            print "_" * 60
+            print("to reproduce:")
+            print("_" * 60)
+            print(make_reproducer(output.getvalue()))
+            print("_" * 60)
             raise
         t3 = time.time()
-        print 'generation/optimization [s]:', t2 - t1, 'z3:', t3 - t2, "total:", t3 - t1
-        print 'correct conditions:', correct, 'timed out conditions:', timeout
+        print('generation/optimization [s]:', t2 - t1, 'z3:', t3 - t2, "total:", t3 - t1)
+        print('correct conditions:', correct, 'timed out conditions:', timeout)
         if num is not None:
-            print '    # passed (%d/%s).' % (num + 1, max)
+            print('    # passed (%d/%s).' % (num + 1, max))
         else:
-            print '    # passed.'
-        print
+            print('    # passed.')
+        print()
 
     def test_random_z3(self):
         cpu = LLGraphCPU(None)
@@ -938,9 +938,9 @@ class TestOptimizeIntBoundsZ3(BaseCheckZ3, TOptimizeIntBounds):
                                              pytest.config.option.repeat)
                     seed = r.randrange(sys.maxint)
         except Exception as e:
-            print "_" * 60
-            print "got exception", e
-            print "seed was", seed
+            print("_" * 60)
+            print("got exception", e)
+            print("seed was", seed)
             raise
 
 @given(strategies.randoms())
@@ -958,16 +958,16 @@ def DISABLED_test_random_loop_parses(r): # guard_class doesn't parse right now u
     try:
         check_via_reproducer_string(r)
     except Exception as e:
-        print "error", e
-        print "to reproduce"
-        print "_" * 60
-        print r
-        print "_" * 60
+        print("error", e)
+        print("to reproduce")
+        print("_" * 60)
+        print(r)
+        print("_" * 60)
         raise
 
 def check_via_reproducer_string(r):
     d = {}
-    exec r in d
+    exec(r, d)
     loop = d['loop']
     cpu = LLGraphCPU(None)
     cpu.supports_floats = False
@@ -1060,10 +1060,10 @@ if __name__ == '__main__':
     try:
         check_via_reproducer_string(ops)
     except CheckError as e:
-        print e
+        print(e)
         os._exit(0)
     except Exception as e:
-        print e
+        print(e)
         os._exit(-1)
     os._exit(-1)
 

@@ -39,10 +39,10 @@ def llexternal(name, args, result, **kwds):
 
 @not_rpython
 def _emulated_start_new_thread(func):
-    import thread
+    import _thread
     try:
-        ident = thread.start_new_thread(func, ())
-    except thread.error:
+        ident = _thread.start_new_thread(func, ())
+    except _thread.error:
         ident = -1
     return rffi.cast(lltype.Signed, ident)
 
@@ -116,10 +116,10 @@ def get_ident():
         return tlfield_thread_ident.getraw()
     else:
         try:
-            import thread
+            import _thread
         except ImportError:
             return 42
-        return thread.get_ident()
+        return _thread.get_ident()
 
 def get_or_make_ident():
     if we_are_translated():
@@ -333,7 +333,7 @@ class ThreadLocalField(object):
     def __init__(self, FIELDTYPE, fieldname, loop_invariant=False):
         "must be prebuilt"
         try:
-            from thread import _local
+            from _thread import _local
         except ImportError:
             class _local(object):
                 pass

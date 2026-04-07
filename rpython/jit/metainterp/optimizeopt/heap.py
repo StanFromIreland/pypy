@@ -383,9 +383,9 @@ class OptHeap(Optimization):
         for descr, cf in items:
             if not descr.is_always_pure():
                 cf.invalidate(descr)
-        for descr, submap in self.cached_arrayitems.iteritems():
+        for descr, submap in self.cached_arrayitems.items():
             if not descr.is_always_pure():
-                for index, cf in submap.const_indexes.iteritems():
+                for index, cf in submap.const_indexes.items():
                     cf.invalidate(None)
         self.cached_dict_reads.clear()
 
@@ -581,13 +581,13 @@ class OptHeap(Optimization):
         submap = self.arrayitem_submap(arraydescr, create_if_nonexistant=False)
         if not submap:
             return
-        for idx, cf in submap.const_indexes.iteritems():
+        for idx, cf in submap.const_indexes.items():
             if indexb is None or indexb.contains(idx):
                 cf.force_lazy_set(self, None, can_cache)
 
 
     def force_lazy_setarrayitem_submap(self, submap, can_cache=True):
-        for cf in submap.const_indexes.itervalues():
+        for cf in submap.const_indexes.values():
             cf.force_lazy_set(self, None, can_cache)
 
     def force_all_lazy_sets(self):
@@ -597,7 +597,7 @@ class OptHeap(Optimization):
             items.sort(key=str, reverse=True)
         for descr, cf in items:
             cf.force_lazy_set(self, descr)
-        for submap in self.cached_arrayitems.itervalues():
+        for submap in self.cached_arrayitems.values():
             items = submap.const_indexes.items()
             if not we_are_translated():
                 # stability for tests
@@ -619,8 +619,8 @@ class OptHeap(Optimization):
                 pendingfields.append(op)
                 continue
             cf.force_lazy_set(self, descr)
-        for descr, submap in self.cached_arrayitems.iteritems():
-            for index, cf in submap.const_indexes.iteritems():
+        for descr, submap in self.cached_arrayitems.items():
+            for index, cf in submap.const_indexes.items():
                 op = cf._lazy_set
                 if op is None:
                     continue
@@ -824,7 +824,7 @@ class OptHeap(Optimization):
 
     def serialize_optheap(self, available_boxes):
         result_getfield = []
-        for descr, cf in self.cached_fields.iteritems():
+        for descr, cf in self.cached_fields.items():
             if descr.get_descr_index() == -1:
                 continue # not reachable via metainterp_sd.all_descrs
             if cf._lazy_set:
@@ -845,10 +845,10 @@ class OptHeap(Optimization):
                 if box2.is_constant() or box2 in available_boxes:
                     result_getfield.append((box1, descr, box2))
         result_array = []
-        for descr, indexdict in self.cached_arrayitems.iteritems():
+        for descr, indexdict in self.cached_arrayitems.items():
             if descr.get_descr_index() == -1:
                 continue # not reachable via metainterp_sd.all_descrs
-            for index, cf in indexdict.const_indexes.iteritems():
+            for index, cf in indexdict.const_indexes.items():
                 if cf._lazy_set:
                     continue  # XXX safe default for now
                 for i, box1 in enumerate(cf.cached_structs):

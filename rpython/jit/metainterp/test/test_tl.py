@@ -131,14 +131,14 @@ class ToyLanguageTests:
                    Stack.append,
                    Stack.pop]
         for meth in methods:
-            meth_func = meth.im_func
+            meth_func = meth.__func__
             assert not hasattr(meth_func, '_jit_look_inside_')
             meth_func._jit_look_inside_ = False
         try:
             self.test_tl_call(listops=False)
         finally:
             for meth in methods:
-                meth_func = meth.im_func
+                meth_func = meth.__func__
                 del meth_func._jit_look_inside_
 
 class TestLLtype(ToyLanguageTests, LLJitMixin):

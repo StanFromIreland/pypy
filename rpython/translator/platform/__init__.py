@@ -12,6 +12,10 @@ log = AnsiLogger("platform")
 
 class CompilationError(Exception):
     def __init__(self, out, err):
+        if isinstance(out, bytes):
+            out = out.decode('utf-8', 'replace')
+        if isinstance(err, bytes):
+            err = err.decode('utf-8', 'replace')
         self.out = out.replace('\r\n', '\n')
         self.err = err.replace('\r\n', '\n')
 
@@ -28,6 +32,10 @@ class CompilationError(Exception):
 class ExecutionResult(object):
     def __init__(self, returncode, out, err):
         self.returncode = returncode
+        if isinstance(out, bytes):
+            out = out.decode('utf-8', 'replace')
+        if isinstance(err, bytes):
+            err = err.decode('utf-8', 'replace')
         self.out = out.replace('\r\n', '\n')
         self.err = err.replace('\r\n', '\n')
 

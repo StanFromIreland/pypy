@@ -66,7 +66,7 @@ def test_find_objdump():
 
     #
     path = udir.join('objdump')
-    print >>path, 'hello world'
+    print('hello world', file=path)
     os.environ['PATH'] = path.dirname
     assert find_objdump() == 'objdump'
     #

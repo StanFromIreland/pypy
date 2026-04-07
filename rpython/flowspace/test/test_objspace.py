@@ -35,7 +35,7 @@ class Base:
     def codetest(self, func, **kwds):
         import inspect
         try:
-            func = func.im_func
+            func = func.__func__
         except AttributeError:
             pass
         #name = func.func_name
@@ -669,8 +669,9 @@ class TestFlowObjSpace(Base):
     #__________________________________________________________
     def test_unfrozen_user_class1(self):
         class C:
-            def __nonzero__(self):
+            def __bool__(self):
                 return True
+
         c = C()
         def f():
             if c:
@@ -703,8 +704,9 @@ class TestFlowObjSpace(Base):
 
     def test_frozen_user_class1(self):
         class C:
-            def __nonzero__(self):
+            def __bool__(self):
                 return True
+
             def _freeze_(self):
                 return True
         c = C()

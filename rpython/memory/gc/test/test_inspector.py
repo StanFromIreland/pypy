@@ -15,7 +15,7 @@ class InspectorTest(BaseDirectGCTest):
         self.write(p, 'next', q)
         self.stackroots.append(p)
         #
-        saved = inspector.HeapDumper.flush.im_func
+        saved = inspector.HeapDumper.flush.__func__
         try:
             seen = []
             def my_flush(self):
@@ -30,6 +30,8 @@ class InspectorTest(BaseDirectGCTest):
         class ASize(object):
             def __eq__(self, other):
                 return isinstance(other, llmemory.AddressOffset)
+
+            __hash__ = object.__hash__
         adr_p = seen[0]
         adr_q = seen[3]
         expected = [adr_p, 1, ASize(), adr_q, -1,

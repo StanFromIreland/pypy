@@ -649,6 +649,8 @@ class FakeDescr(compile.ResumeGuardDescr):
     def __eq__(self, other):
         return isinstance(other, FakeDescr)
 
+    __hash__ = object.__hash__
+
 def convert_old_style_to_targets(loop, jump):
     newloop = TreeLoop(loop.name)
     newloop.inputargs = loop.inputargs

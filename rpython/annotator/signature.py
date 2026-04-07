@@ -82,11 +82,13 @@ def annotationoftype(t, bookkeeper=False):
 
     """The most precise SomeValue instance that contains all
     objects of type t."""
-    assert isinstance(t, (type, types.ClassType))
+    assert isinstance(t, type)
     if t is bool:
         return SomeBool()
     elif t is int:
         return SomeInteger()
+    elif issubclass(t, int):
+        return SomeInteger(knowntype=t)
     elif t is float:
         return SomeFloat()
     elif issubclass(t, str): # py.lib uses annotated str subclasses

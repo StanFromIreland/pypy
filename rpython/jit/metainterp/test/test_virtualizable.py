@@ -1166,7 +1166,7 @@ class ImplicitVirtualizableTests(object):
         t = get_translator()
         f_graph, portal_graph = [graph for graph in t.graphs
                                        if getattr(graph, 'func', None) is f]
-        init_graph = t._graphof(Frame.__init__.im_func)
+        init_graph = t._graphof(Frame.__init__.__func__)
 
         def direct_calls(graph):
             return [op.args[0].value._obj._callable.__name__
@@ -1541,7 +1541,7 @@ class ImplicitVirtualizableTests(object):
             return frame.thing.val
 
         res = self.meta_interp(main, [0], inline=True)
-        print hex(res)
+        print(hex(res))
         assert res == main(0)
 
     def test_force_virtualref_to_virtualizable(self):

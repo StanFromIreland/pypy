@@ -184,7 +184,8 @@ def stack_sp(argnum):
 # ____________________________________________________________
 # Emit a mod/rm referencing a memory location [reg1+offset]
 
-def encode_mem_reg_plus_const(mc, (reg, offset), _, orbyte):
+def encode_mem_reg_plus_const(mc, _tup0, _, orbyte):
+    reg, offset = _tup0
     assert reg != R.esp and reg != R.ebp
     #
     reg1 = reg_number_3bits(mc, reg)
@@ -211,7 +212,8 @@ def encode_mem_reg_plus_const(mc, (reg, offset), _, orbyte):
         mc.writeimm32(offset)
     return 0
 
-def rex_mem_reg_plus_const(mc, (reg, offset), _):
+def rex_mem_reg_plus_const(mc, _tup0, _):
+    reg, offset = _tup0
     if reg >= 8:
         return REX_B
     return 0

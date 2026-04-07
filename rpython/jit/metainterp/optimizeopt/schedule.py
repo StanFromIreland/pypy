@@ -977,6 +977,8 @@ class Pair(Pack):
             return self.left is other.left and \
                    self.right is other.right
 
+    __hash__ = object.__hash__
+
 class AccumPack(Pack):
     SUPPORTED = staticmethod(dict_to_switch({ rop.INT_ADD: '+', }))
 

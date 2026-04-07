@@ -411,7 +411,7 @@ class ResumeDataVirtualAdder(VirtualVisitor):
         n = len(liveboxes_from_env) - num_virtuals
         liveboxes = [None] * n
         self.vfieldboxes = {}
-        for box, tagged in liveboxes_from_env.iteritems():
+        for box, tagged in liveboxes_from_env.items():
             i, tagbits = untag(tagged)
             if tagbits == TAGBOX:
                 liveboxes[i] = box
@@ -464,7 +464,7 @@ class ResumeDataVirtualAdder(VirtualVisitor):
         # with the TAGVIRTUAL.  The following loop removes the UNASSIGNED
         # and UNASSIGNEDVIRTUAL entries, and replaces them with real
         # negative values.
-        for box, tagged in self.liveboxes.iteritems():
+        for box, tagged in self.liveboxes.items():
             i, tagbits = untag(tagged)
             if tagbits == TAGBOX:
                 assert box not in self.liveboxes_from_env
@@ -492,7 +492,7 @@ class ResumeDataVirtualAdder(VirtualVisitor):
             virtuals = storage.rd_virtuals = [None] * length
             memo.nvirtuals += length
             memo.nvholes += length - len(vfieldboxes)
-            for virtualbox, fieldboxes in vfieldboxes.iteritems():
+            for virtualbox, fieldboxes in vfieldboxes.items():
                 num, _ = untag(self.liveboxes[virtualbox])
                 info = getptrinfo(virtualbox)
                 assert info.is_virtual()

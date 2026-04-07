@@ -222,16 +222,16 @@ class TestBlackhole(LLJitMixin):
         assert builder.num_interpreters == 2
 
 def test_bad_shift():
-    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_lshift.im_func, 7, 100)
-    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_rshift.im_func, 7, 100)
-    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_uint_rshift.im_func, 7, 100)
-    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_lshift.im_func, 7, -1)
-    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_rshift.im_func, 7, -1)
-    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_uint_rshift.im_func, 7, -1)
+    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_lshift.__func__, 7, 100)
+    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_rshift.__func__, 7, 100)
+    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_uint_rshift.__func__, 7, 100)
+    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_lshift.__func__, 7, -1)
+    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_int_rshift.__func__, 7, -1)
+    pytest.raises(ValueError, BlackholeInterpreter.bhimpl_uint_rshift.__func__, 7, -1)
 
-    assert BlackholeInterpreter.bhimpl_int_lshift.im_func(100, 3) == 100<<3
-    assert BlackholeInterpreter.bhimpl_int_rshift.im_func(100, 3) == 100>>3
-    assert BlackholeInterpreter.bhimpl_uint_rshift.im_func(100, 3) == 100>>3
+    assert BlackholeInterpreter.bhimpl_int_lshift.__func__(100, 3) == 100<<3
+    assert BlackholeInterpreter.bhimpl_int_rshift.__func__(100, 3) == 100>>3
+    assert BlackholeInterpreter.bhimpl_uint_rshift.__func__(100, 3) == 100>>3
 
 def test_debug_fatalerror():
     from rpython.rtyper.lltypesystem import lltype, llmemory, rstr
@@ -240,6 +240,6 @@ def test_debug_fatalerror():
     msg.chars[0] = "!"
     msg = lltype.cast_opaque_ptr(llmemory.GCREF, msg)
     e = pytest.raises(LLFatalError,
-                       BlackholeInterpreter.bhimpl_debug_fatalerror.im_func,
+                       BlackholeInterpreter.bhimpl_debug_fatalerror.__func__,
                        msg)
     assert str(e.value) == '!'

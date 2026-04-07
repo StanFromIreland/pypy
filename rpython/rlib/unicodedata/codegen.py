@@ -59,7 +59,7 @@ class CodeWriter(object):
         def kib(size):
             return round(size/1024., 2)
         print("estimated output sizes [KiB]")
-        print("TOTAL", kib(sum(value for key, value in self.size_estimates.iteritems() if key != "unknown" and key != "code")))
+        print("TOTAL", kib(sum(value for key, value in self.size_estimates.items() if key != "unknown" and key != "code")))
         for category, size in self.size_estimates.most_common():
             if category == "code":
                 continue
@@ -189,8 +189,7 @@ def %(name)s(index):
         print(")", file=self.outfile)
 
     def print_dict(self, name, d, category=None, outfunc=repr):
-        items = d.items()
-        items.sort()
+        items = sorted(d.items())
         print('%s = {' % name, file=self.outfile)
         for key, value in items:
             self._estimate_any(name, key, category)

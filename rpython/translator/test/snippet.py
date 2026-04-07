@@ -578,7 +578,7 @@ def call_star_args_multiple(z):
     c = star_args(z, 5, 10, 15, 20)
     return a+b+c
 
-def default_args(x, y=2, z=3L):
+def default_args(x, y=2, z=3):
     return x+y+z
 
 def call_default_args(u):
@@ -613,11 +613,11 @@ def powerset(setsize=int):
     """
     set = range(setsize)
     maxcardinality = pow(2, setsize)
-    bitmask = 0L
+    bitmask = 0
     powerset = [None] * maxcardinality
     ptr = 0
     while bitmask < maxcardinality:
-        bitpos = 1L
+        bitpos = 1
         index = 0
         subset = []
         while bitpos < maxcardinality:
@@ -831,7 +831,7 @@ def exception_deduction_with_raise3(x):
     try:
         exception_deduction0(2)
         if x:
-            raise Exc, Exc()
+            raise Exc(Exc())
     except Exc as e:
         witness(e)
         return e
@@ -1080,7 +1080,7 @@ def lshift_func(i=numtype):
     try:
         hugo(2, 3, 5)
         return ovfcheck((-maxint-1) << i)
-    except (hugelmugel, OverflowError, StandardError, ValueError):
+    except (hugelmugel, OverflowError, Exception, ValueError):
         raise
 
 def unary_func(i=numtype):

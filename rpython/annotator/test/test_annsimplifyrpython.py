@@ -99,9 +99,9 @@ class TestAnnotateAndSimplifyTestCase(parent):
         assert famA_m is famC_m
         assert famB_n is not famA_m
 
-        gfB_n = graphof(a, B.n.im_func)
-        gfA_m = graphof(a, A.m.im_func)
-        gfC_m = graphof(a, C.m.im_func)
+        gfB_n = graphof(a, B.n.__func__)
+        gfA_m = graphof(a, A.m.__func__)
+        gfC_m = graphof(a, C.m.__func__)
 
         assert famB_n.calltables == {(1, (), False): [{mdescB_n.funcdesc: gfB_n}]}
         assert famA_m.calltables == {(1, (), False): [
@@ -109,7 +109,7 @@ class TestAnnotateAndSimplifyTestCase(parent):
 
         mdescCinit = getmdesc(C().__init__)
         famCinit = mdescCinit.getcallfamily()
-        gfCinit = graphof(a, C.__init__.im_func)
+        gfCinit = graphof(a, C.__init__.__func__)
 
         assert famCinit.calltables == {(1, (), False): [{mdescCinit.funcdesc: gfCinit}]}
 

@@ -382,7 +382,7 @@ class TestInline(BaseRtypingTest):
         def f(i):
             a = A(117, i)
             return a.area()
-        eval_func = self.check_inline(A.__init__.im_func, f, [int])
+        eval_func = self.check_inline(A.__init__.__func__, f, [int])
         result = eval_func([120])
         assert result == 30
 

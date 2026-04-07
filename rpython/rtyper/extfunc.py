@@ -124,9 +124,9 @@ def register_external(function, args, result=None, export_name=None,
         signature_args = params_s
         signature_result = s_result
         name = export_name
-        if llimpl:
+        if llimpl is not None:
             lltypeimpl = staticmethod(llimpl)
-        if llfakeimpl:
+        if llfakeimpl is not None:
             lltypefakeimpl = staticmethod(llfakeimpl)
 
 def is_external(func):

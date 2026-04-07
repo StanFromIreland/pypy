@@ -14,6 +14,8 @@ class Token(object):
         # for testing only
         return self.__dict__ == other.__dict__
 
+    __hash__ = object.__hash__
+
     def __ne__(self, other):
         # for testing only
         return not self == other
@@ -34,6 +36,8 @@ class SourcePos(object):
     def __eq__(self, other):
         # for testing only
         return self.__dict__ == other.__dict__
+
+    __hash__ = object.__hash__
 
     def __ne__(self, other):
         # for testing only

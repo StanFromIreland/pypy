@@ -203,9 +203,9 @@ def write_barrier_check(spaceop, needs_write_barrier=True):
     hop = GcHighLevelOp(transformer, spaceop, 0, llops)
     hop.dispatch()
     found = False
-    print spaceop, '======>'
+    print(spaceop, '======>')
     for op in llops:
-        print '\t', op
+        print('\t', op)
         if op.opname == 'direct_call':
             found = True
     assert found == needs_write_barrier

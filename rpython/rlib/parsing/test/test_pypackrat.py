@@ -11,7 +11,7 @@ class TestPackrat(object):
             b: 'a'+;
             c: ('a' | 'b')+;
             """
-        print parser._code
+        print(parser._code)
         p = parser("ababababa")
         assert p.c() == list("ababababa")
         p = parser("aaaaaaaa")
@@ -26,7 +26,7 @@ class TestPackrat(object):
             """
             a: 'a'? 'b';
             """
-        print parser._code
+        print(parser._code)
         p = parser("ab")
         assert p.a() == 'b'
         p = parser("b")
@@ -38,7 +38,7 @@ class TestPackrat(object):
             a: 'a'? 'b';
             b: a 'c';
             """
-        print parser._code
+        print(parser._code)
         p = parser("abc")
         res = p.b()
         assert res == 'c'
@@ -54,7 +54,7 @@ class TestPackrat(object):
             b: 'b';
             c: 'c';
             """
-        print parser._code
+        print(parser._code)
         p = parser("bend")
         res = p.x()
         assert res == 'end'
@@ -64,7 +64,7 @@ class TestPackrat(object):
             """
             a: 'a' <'b'> 'c'+;
             """
-        print parser._code
+        print(parser._code)
         p = parser("abcccccc")
         p.a() == 'b'
 
@@ -73,7 +73,7 @@ class TestPackrat(object):
             """
             a: 'bh' !'a';
             """
-        print parser._code
+        print(parser._code)
         p = parser('bhc')
         assert p.a() == 'bh'
         p.__chars__('c') == 'c'
@@ -86,7 +86,7 @@ class TestPackrat(object):
             """
             a: 'b' !!'a';
             """
-        print parser._code
+        print(parser._code)
         p = parser('ba')
         res = p.a()
         assert res == 'b'
@@ -97,7 +97,7 @@ class TestPackrat(object):
             """
             a: 'b' `a|b`;
             """
-        print parser._code
+        print(parser._code)
         p = parser('ba')
         res = p.a()
         assert res == 'a'
@@ -113,7 +113,7 @@ class TestPackrat(object):
             """
             a: 'b' `[^\n]*`;
             """
-        print parser._code
+        print(parser._code)
         p = parser('ba#$@@$%\nbc')
         res = p.a()
         assert res == 'a#$@@$%'
@@ -126,7 +126,7 @@ class TestPackrat(object):
                r = `[^\n]*`
                return {c + r};
             """
-        print parser._code
+        print(parser._code)
         p = parser('ba#$@@$%\nbc')
         res = p.a()
         assert res == 'ba#$@@$%'
@@ -139,7 +139,7 @@ class TestPackrat(object):
                r = `[^\n]*`
                return {(len(c), r)};
             """
-        print parser._code
+        print(parser._code)
         p = parser('bbbbbba#$@@$%\nbc')
         res = p.a()
         assert res == (6, "a#$@@$%")
@@ -155,7 +155,7 @@ class TestPackrat(object):
                r = `[^\n]*`
                return {(len(c), r)};
             """
-        print parser._code
+        print(parser._code)
         p = parser('bbbbbba#$@@$%\nbc')
         res = p.a()
         assert res == (6, "a#$@@$%")
@@ -170,7 +170,7 @@ class TestPackrat(object):
             """
             a: ('a' 'b'*)+;
             """
-        print parser._code
+        print(parser._code)
         p = parser('aaabbbab')
         res = p.a()
         assert res == [[], [], ['b', 'b', 'b'], ['b']]
@@ -181,7 +181,7 @@ class TestPackrat(object):
             """
             a: ('a' ['b'])+;
             """
-        print parser._code
+        print(parser._code)
         p = parser('abababababab')
         res = p.a()
         assert res == list('aaaaaa')
@@ -192,7 +192,7 @@ class TestPackrat(object):
             r"""
             a: `\"`;
             """
-        print parser._code
+        print(parser._code)
         p = parser('"')
         res = p.a()
         assert res == '"'
@@ -203,7 +203,7 @@ class TestPackrat(object):
             """
             b: 'a';
             """
-        print parser._code
+        print(parser._code)
         p = parser("c")
         excinfo = py.test.raises(BacktrackException, p.b)
         excinfo = py.test.raises(BacktrackException, p.b)
@@ -214,7 +214,7 @@ class TestPackrat(object):
             """
             b: 'a';
             """
-        print parser._code
+        print(parser._code)
         p = parser("c")
         excinfo = py.test.raises(BacktrackException, p.b)
         assert excinfo.value.error.pos == 0
@@ -225,7 +225,7 @@ class TestPackrat(object):
             """
             b: 'a' | 'b';
             """
-        print parser._code
+        print(parser._code)
         p = parser("c")
         excinfo = py.test.raises(BacktrackException, p.b)
         assert excinfo.value.error.pos == 0
@@ -241,7 +241,7 @@ class TestPackrat(object):
         excinfo = py.test.raises(BacktrackException, p.b)
         assert excinfo.value.error.pos == 1
         assert excinfo.value.error.expected == ['NOT a']
-        print parser._code
+        print(parser._code)
 
     def test_error_lookahead(self):
         class parser(PackratParser):
@@ -250,7 +250,7 @@ class TestPackrat(object):
                 'b' !!'a';
             """
         p = parser("bc")
-        print parser._code
+        print(parser._code)
         excinfo = py.test.raises(BacktrackException, p.b)
         assert excinfo.value.error.pos == 1
         assert excinfo.value.error.expected == ['a']
@@ -261,9 +261,9 @@ class TestPackrat(object):
             b: 
                 'b'* !__any__;
             """
-        print parser._code
+        print(parser._code)
         p = parser("bbc")
-        print parser._code
+        print(parser._code)
         excinfo = py.test.raises(BacktrackException, p.b)
         assert excinfo.value.error.pos == 2
         assert excinfo.value.error.expected == ['b']
@@ -276,9 +276,9 @@ class TestPackrat(object):
             bstar:
                 'b'*;
             """
-        print parser._code
+        print(parser._code)
         p = parser("bbc")
-        print parser._code
+        print(parser._code)
         excinfo = py.test.raises(BacktrackException, p.b)
         assert excinfo.value.error.pos == 2
         assert excinfo.value.error.expected == ['b']
@@ -288,7 +288,7 @@ class TestPackrat(object):
             """
             b: b 'a' | 'b';
             """
-        print parser._code
+        print(parser._code)
         p = parser("b")
         res = p.b()
         assert res == "b"
@@ -320,7 +320,7 @@ class TestPackrat(object):
                 x = `0|([1-9][0-9]*)`
                 return {int(x)};
             """
-        print parser._code
+        print(parser._code)
         p = parser("5")
         res = p.multitive()
         assert res == 5
@@ -340,7 +340,7 @@ class TestPackrat(object):
               | b 'c'
               | 'b';
             """
-        print parser._code
+        print(parser._code)
         p = parser("b")
         res = p.b()
         assert res == "b"
@@ -384,7 +384,7 @@ class TestPackrat(object):
                     c = INT
                 if {c > 42};
             """
-        print parser._code
+        print(parser._code)
         p = parser("54")
         res = p.b()
         assert res == 54
@@ -402,7 +402,7 @@ class TestPackrat(object):
                 return {int(c)}
               | 'xyz';
             """
-        print parser._code
+        print(parser._code)
         p = parser("54")
         res = p.b(54)
         assert res == 54

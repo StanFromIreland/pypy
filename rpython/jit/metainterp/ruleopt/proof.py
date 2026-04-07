@@ -39,7 +39,7 @@ class CouldNotProve(ProofProblem):
         detail = []
         res.append("counterexample given by Z3:")
         res.append("counterexample values:")
-        for name, bound in prover.name_to_intbound.iteritems():
+        for name, bound in prover.name_to_intbound.items():
             if name in prover.glue_conditions_added:
                 realbound = IntBound(model.evaluate(bound.lower).as_signed_long(),
                                       model.evaluate(bound.upper).as_signed_long(),
@@ -380,7 +380,7 @@ class Prover(parse.Visitor):
     def check_rule(self, rule):
         import time
         t1 = time.time()
-        print("checking %s" % rule)
+        print(("checking %s" % rule))
         lhs, lhsvalid = self.visit(rule.pattern)
         self.must_be_sat(rule, lhs, lhsvalid)
         rhs, rhsvalid = self.visit(rule.target)
@@ -408,7 +408,7 @@ class Prover(parse.Visitor):
         if not self.prove(condition):
             raise CouldNotProve(rule, condition, model, lhs, rhs, self)
         t2 = time.time()
-        print("took %s seconds" % (t2 - t1))
+        print(("took %s seconds" % (t2 - t1)))
 
 
 def prove_source(s, force=False):
@@ -416,7 +416,7 @@ def prove_source(s, force=False):
     ast = parse.parse(s)
     for rule in ast.rules:
         if rule.cantproof:
-            print "SKIPPING PROOF!", rule.name
+            print("SKIPPING PROOF!", rule.name)
             continue
         cachename = None
         if not force:
@@ -430,7 +430,7 @@ def prove_source(s, force=False):
             try:
                 with open(cachename, 'rb') as f:
                     f.read() # just needs to exist, really
-                print "reusing previous proof", rule.name
+                print("reusing previous proof", rule.name)
                 continue
             except IOError:
                 pass

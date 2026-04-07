@@ -487,8 +487,9 @@ class fakeaddress(object):
             return self
         return NotImplemented
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.ptr is not None
+
 
     #def __hash__(self):
     #    raise TypeError("don't put addresses in a prebuilt dictionary")
@@ -505,6 +506,8 @@ class fakeaddress(object):
                 return self.ptr is other.ptr
         else:
             return NotImplemented
+
+    __hash__ = object.__hash__
 
     def __ne__(self, other):
         if isinstance(other, fakeaddress):
@@ -614,10 +617,13 @@ class AddressAsInt(Symbolic):
         return lltype.Signed
     def __eq__(self, other):
         return self.adr == cast_int_to_adr(other)
+
+    __hash__ = object.__hash__
     def __ne__(self, other):
         return self.adr != cast_int_to_adr(other)
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self.adr)
+
     def __add__(self, ofs):
         if (isinstance(ofs, int) and
                 getattr(self.adr.ptr._TYPE.TO, 'OF', None) == lltype.Char):

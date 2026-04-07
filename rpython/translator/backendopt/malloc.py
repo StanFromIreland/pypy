@@ -8,7 +8,8 @@ from rpython.translator.backendopt.support import log
 
 class LifeTime:
 
-    def __init__(self, (block, var)):
+    def __init__(self, _tup0):
+        block, var = _tup0
         assert isinstance(var, Variable)
         self.variables = {(block, var)}
         self.creationpoints = set()   # set of ("type of creation point", ...)

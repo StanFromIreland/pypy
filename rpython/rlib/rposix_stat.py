@@ -201,7 +201,8 @@ class SomeStatResult(annmodel.SomeObject):
 
 
 class __extend__(pairtype(SomeStatResult, annmodel.SomeInteger)):
-    def getitem((s_sta, s_int)):
+    def getitem(_tup0):
+        s_sta, s_int = _tup0
         assert s_int.is_constant(), "os.stat()[index]: index must be constant"
         index = s_int.const
         assert -3 <= index < N_INDEXABLE_FIELDS, "os.stat()[index] out of range"
@@ -266,7 +267,8 @@ def _ll_get_st_ctime(tup):
 
 
 class __extend__(pairtype(StatResultRepr, IntegerRepr)):
-    def rtype_getitem((r_sta, r_int), hop):
+    def rtype_getitem(_tup0, hop):
+        r_sta, r_int = _tup0
         s_int = hop.args_s[1]
         index = s_int.const
         if index < 0:
@@ -336,7 +338,8 @@ class SomeStatvfsResult(annmodel.SomeObject):
 
 
 class __extend__(pairtype(SomeStatvfsResult, annmodel.SomeInteger)):
-    def getitem((s_stat, s_int)):
+    def getitem(_tup0):
+        s_stat, s_int = _tup0
         assert s_int.is_constant()
         name, TYPE = STATVFS_FIELDS[s_int.const]
         return lltype_to_annotation(TYPE)
@@ -380,7 +383,8 @@ class StatvfsResultRepr(Repr):
 
 
 class __extend__(pairtype(StatvfsResultRepr, IntegerRepr)):
-    def rtype_getitem((r_sta, r_int), hop):
+    def rtype_getitem(_tup0, hop):
+        r_sta, r_int = _tup0
         s_int = hop.args_s[1]
         index = s_int.const
         return r_sta.redispatch_getfield(hop, index)
@@ -492,7 +496,6 @@ else:
 # these global vars only list the fields defined in the underlying platform
 STAT_FIELD_TYPES = dict(STAT_FIELDS)      # {'st_xxx': TYPE}
 STAT_FIELD_NAMES = [_name for (_name, _TYPE) in STAT_FIELDS]
-del _name, _TYPE
 
 STATVFS_FIELD_TYPES = dict(STATVFS_FIELDS)
 STATVFS_FIELD_NAMES = [name for name, tp in STATVFS_FIELDS]
@@ -853,13 +856,13 @@ if _WIN32:
         m = 0
         attributes = widen(attributes)
         if attributes & win32traits.FILE_ATTRIBUTE_DIRECTORY:
-            m |= win32traits._S_IFDIR | 0111 # IFEXEC for user,group,other
+            m |= win32traits._S_IFDIR | 0o111 # IFEXEC for user,group,other
         else:
             m |= win32traits._S_IFREG
         if attributes & win32traits.FILE_ATTRIBUTE_READONLY:
-            m |= 0444
+            m |= 0o444
         else:
-            m |= 0666
+            m |= 0o666
         return m
 
     @specialize.arg(0)
@@ -879,7 +882,7 @@ if _WIN32:
         if (st_file_attributes & win32traits.FILE_ATTRIBUTE_REPARSE_POINT
                 and st_reparse_tag ==  0xa000000c):  # IO_REPARSE_TAG_SYMLINK
             # first clear the S_IMFT bits
-            st_mode ^= (st_mode & 0170000)  # S_IFMT
+            st_mode ^= (st_mode & 0o170000)  # S_IFMT
             # now set the bits that make this a symlink
             st_mode |= win32traits._S_IFLNK
 

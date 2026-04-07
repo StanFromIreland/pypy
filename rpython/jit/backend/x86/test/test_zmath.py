@@ -10,7 +10,8 @@ from rpython.rlib.debug import debug_print
 from rpython.rtyper.lltypesystem.module.test.math_cases import (MathTests,
                                                                 get_tester)
 
-def get_test_case((fnname, args, expected)):
+def get_test_case(_tup0):
+    fnname, args, expected = _tup0
     try:
         fn = getattr(math, fnname)
     except AttributeError:

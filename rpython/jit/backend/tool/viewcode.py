@@ -461,11 +461,11 @@ if __name__ == '__main__':
         print(__doc__, file=sys.stderr)
         sys.exit(2)
     #
-    import cStringIO
+    import io
     from rpython.tool import logparser
     log1 = logparser.parse_log_file(sys.argv[1])
     text1 = logparser.extract_category(log1, catprefix='jit-backend-dump')
-    f = cStringIO.StringIO()
+    f = io.StringIO()
     f.writelines(text1)
     f.seek(0)
     del log1, text1

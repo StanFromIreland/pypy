@@ -106,12 +106,12 @@ if __name__ == '__main__':
     assert shadow_old not in allocatable_registers
     assert shadow_old in callee_saved_registers
 
-    print 'Core registers'
-    print '* Number of caller saved:', len(caller_saved_registers)
-    print '* Number of callee saved:', len(callee_saved_registers)
-    print '* Number of allocatable:', len(allocatable_registers)
+    print('Core registers')
+    print('* Number of caller saved:', len(caller_saved_registers))
+    print('* Number of callee saved:', len(callee_saved_registers))
+    print('* Number of allocatable:', len(allocatable_registers))
 
-    print 'Floating point registers'
-    print '* Number of caller saved:', len(caller_saved_fp_registers)
-    print '* Number of callee saved:', len(callee_saved_fp_registers)
-    print '* Number of allocatable:', len(allocatable_fp_registers)
+    print('Floating point registers')
+    print('* Number of caller saved:', len(caller_saved_fp_registers))
+    print('* Number of callee saved:', len(callee_saved_fp_registers))
+    print('* Number of allocatable:', len(allocatable_fp_registers))

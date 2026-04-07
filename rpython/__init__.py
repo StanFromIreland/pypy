@@ -3,6 +3,17 @@
 # this differs from the CPython implementation
 # see comment at the top of rpython.rlib.rarithmetic for details
 import sys
+import builtins
+builtins.unicode = str
+builtins.unichr = chr
+builtins.long = int
+builtins.xrange = range
+builtins.basestring = str
+builtins.intern = sys.intern
+builtins.cmp = lambda a, b: (a > b) - (a < b)
+builtins.coerce = lambda a, b: (float(a), float(b)) if isinstance(a, (int, float)) and isinstance(b, (int, float)) else NotImplemented
+builtins.buffer = memoryview
+sys.maxint = sys.maxsize
 if hasattr(sys, "maxint") and hasattr(sys, "maxsize"):
     if sys.maxint != sys.maxsize:
         raise Exception(

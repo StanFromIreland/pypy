@@ -86,7 +86,7 @@ def entry_point(argv):
         
     _time = time() - t
     sumTime += _time
-    print "mod by 2: ", _time
+    print("mod by 2: ", _time)
     
     by = rbigint.fromint(10000)
     t = time()
@@ -95,7 +95,7 @@ def entry_point(argv):
         
     _time = time() - t
     sumTime += _time
-    print "mod by 10000: ", _time
+    print("mod by 10000: ", _time)
     
     V1024 = rbigint.fromint(1024)
     t = time()
@@ -104,7 +104,7 @@ def entry_point(argv):
         
     _time = time() - t
     sumTime += _time
-    print "mod by 1024 (power of two): ", _time
+    print("mod by 1024 (power of two): ", _time)
     
     t = time()
     num = rbigint.pow(rbigint.fromint(100000000), rbigint.fromint(1024))
@@ -115,7 +115,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "Div huge number by 2**128:", _time
+    print("Div huge number by 2**128:", _time)
     
     t = time()
     num = rbigint.fromint(1000000000)
@@ -125,7 +125,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "rshift:", _time
+    print("rshift:", _time)
     
     t = time()
     num = rbigint.fromint(1000000000)
@@ -135,7 +135,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "lshift:", _time
+    print("lshift:", _time)
     
     t = time()
     num = rbigint.fromint(100000000)
@@ -145,7 +145,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "Floordiv by 2:", _time
+    print("Floordiv by 2:", _time)
     
     t = time()
     num = rbigint.fromint(100000000)
@@ -156,7 +156,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "Floordiv by 3 (not power of two):",_time
+    print("Floordiv by 3 (not power of two):",_time)
     
     t = time()
     num = rbigint.fromint(500000)
@@ -166,7 +166,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "2**500000:",_time
+    print("2**500000:",_time)
 
     t = time()
     num = rbigint.fromint(5000000)
@@ -176,7 +176,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "(2**N)**5000000 (power of two):",_time
+    print("(2**N)**5000000 (power of two):",_time)
     
     t = time()
     num = rbigint.pow(rbigint.fromint(10000), rbigint.fromint(2 ** 8))
@@ -188,7 +188,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "10000 ** BIGNUM % 100", _time
+    print("10000 ** BIGNUM % 100", _time)
     
     t = time()
     i = rbigint.fromint(2**31)
@@ -198,7 +198,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "i = i * i:", _time
+    print("i = i * i:", _time)
     
     t = time()
     
@@ -208,7 +208,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "n**10000 (not power of two):",_time
+    print("n**10000 (not power of two):",_time)
     
     t = time()
     for n in xrange(100000):
@@ -217,7 +217,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "Power of two ** power of two:", _time
+    print("Power of two ** power of two:", _time)
     
     
     t = time()
@@ -229,7 +229,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "v = v * power of two", _time
+    print("v = v * power of two", _time)
     
     t = time()
     v2 = rbigint.fromint(2**8)
@@ -239,7 +239,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "v = v * v", _time
+    print("v = v * v", _time)
     
     t = time()
     v3 = rbigint.fromint(2**62)
@@ -249,7 +249,7 @@ def entry_point(argv):
 
     _time = time() - t
     sumTime += _time
-    print "v = v + v", _time
+    print("v = v + v", _time)
     
     x = rbigint.fromstr("13579246801357924680135792468013579246801")
     y = rbigint.fromstr("112233445566778899112233445566778899112233445566778899")
@@ -258,11 +258,11 @@ def entry_point(argv):
         x.gcd(y)
         x = x.int_mul(2).int_add(1)
     _time = time() - t
-    print "gcd", _time
+    print("gcd", _time)
 
     sumTime += _time
 
-    print "Sum: ", sumTime
+    print("Sum: ", sumTime)
 
     return 0
 

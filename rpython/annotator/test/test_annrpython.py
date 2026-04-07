@@ -1333,7 +1333,7 @@ class TestAnnotateTestCase:
         a = self.RPythonAnnotator()
         s = a.build_types(f, [int, int])
 
-        executedesc = a.bookkeeper.getdesc(I.execute.im_func)
+        executedesc = a.bookkeeper.getdesc(I.execute.__func__)
         assert len(executedesc._cache) == 2
 
         assert len(executedesc._cache[(0, 'star', 2)].startblock.inputargs) == 4
@@ -2153,7 +2153,7 @@ class TestAnnotateTestCase:
 
     def test_iterator_union(self):
         def it(d):
-            return d.iteritems()
+            return d.items()
         d0 = {1:2}
         def f():
             it(d0)
@@ -2165,7 +2165,7 @@ class TestAnnotateTestCase:
 
     def test_iteritems_str0(self):
         def it(d):
-            return d.iteritems()
+            return d.items()
         def f():
             d0 = {'1a': '2a', '3': '4'}
             for item in it(d0):
@@ -2178,7 +2178,7 @@ class TestAnnotateTestCase:
 
     def test_iteritems_unicode0(self):
         def it(d):
-            return d.iteritems()
+            return d.items()
         def f():
             d0 = {u'1a': u'2a', u'3': u'4'}
             for item in it(d0):
@@ -2457,7 +2457,7 @@ class TestAnnotateTestCase:
         t = a.translator
         s = a.build_types(f, [])
         assert s.knowntype == int
-        graph = tgraphof(t, A.__del__.im_func)
+        graph = tgraphof(t, A.__del__.__func__)
         assert graph.startblock in a.annotated
 
     def test_annotate__del__baseclass(self):
@@ -2475,7 +2475,7 @@ class TestAnnotateTestCase:
         t = a.translator
         s = a.build_types(f, [])
         assert s.knowntype == int
-        graph = tgraphof(t, A.__del__.im_func)
+        graph = tgraphof(t, A.__del__.__func__)
         assert graph.startblock in a.annotated
 
     def test_annotate_type(self):
@@ -2500,10 +2500,10 @@ class TestAnnotateTestCase:
             d = {}
             for x in []:                n += x
             for y in d:                 n += y
-            for z in d.iterkeys():      n += z
-            for s in d.itervalues():    n += s
+            for z in d.keys():      n += z
+            for s in d.values():    n += s
             for t, u in d.items():      n += t * u
-            for t, u in d.iteritems():  n += t * u
+            for t, u in d.items():  n += t * u
             return n
 
         a = self.RPythonAnnotator()
@@ -4389,9 +4389,9 @@ class TestAnnotateTestCase:
         def f(x):
             d = { 1 : "a", 2 : "b" }
             if x < 10:
-                return d.iterkeys()
+                return d.keys()
             else:
-                return d.itervalues()
+                return d.values()
         a = self.RPythonAnnotator()
 
         with py.test.raises(UnionError) as exc:

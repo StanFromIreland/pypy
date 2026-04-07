@@ -16,11 +16,14 @@ class NonConstant(object):
     def __setattr__(self, attr, value):
         setattr(self.__dict__['constant'], attr, value)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self.__dict__['constant'])
+
 
     def __eq__(self, other):
         return self.__dict__['constant'] == other
+
+    __hash__ = object.__hash__
 
     def __add__(self, other):
         return self.__dict__['constant'] + other

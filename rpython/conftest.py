@@ -1,3 +1,4 @@
+import textwrap
 import py, pytest
 from rpython.tool import leakfinder
 
@@ -22,14 +23,14 @@ else:
 def braindead_deindent(self):
     """monkeypatch that wont end up doing stupid in the python tokenizer"""
     text = '\n'.join(self.lines)
-    short = py.std.textwrap.dedent(text)
+    short = textwrap.dedent(text)
     newsource = py.code.Source()
     newsource.lines[:] = short.splitlines()
     return newsource
 
 py.code.Source.deindent = braindead_deindent
 
-def pytest_report_header():
+def pytest_report_header(config):
     return "pytest-%s from %s" %(pytest.__version__, pytest.__file__)
 
 def pytest_configure(config):
@@ -48,7 +49,7 @@ def pytest_addoption(parser):
     group.addoption('--view', action="store_true", dest="view", default=False,
            help="view translation tests' flow graphs with Pygame")
     group.addoption('-P', '--platform', action="store", dest="platform",
-                    type="string", default="host",
+                    type=str, default="host",
            help="set up tests to use specified platform as compile/run target")
     group = parser.getgroup("JIT options")
     group.addoption('--viewloops', action="store_true",

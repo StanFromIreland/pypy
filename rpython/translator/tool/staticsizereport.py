@@ -1,5 +1,5 @@
 from __future__ import print_function, division
-import cPickle as pickle
+import pickle as pickle
 
 from rpython.tool.ansicolor import red, yellow, green
 from rpython.rtyper.lltypesystem.lltype import typeOf, _ptr, Ptr, ContainerType
@@ -130,7 +130,7 @@ def make_report_static_size(database, nodes, grouper, recursive=None):
 
     nodes = sorted(nodes, key=nodekey)
     totalsize, numobjects = group_static_size(database, nodes, grouper, recursive)
-    l = [(size, key) for key, size in totalsize.iteritems()]
+    l = [(size, key) for key, size in totalsize.items()]
     l.sort()
     l.reverse()
     sizesum = 0

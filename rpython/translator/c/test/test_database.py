@@ -9,19 +9,19 @@ from rpython.rtyper.lltypesystem.rffi import VOIDP, INT_real, INT, CArrayPtr
 
 
 def dump_on_stdout(database):
-    print '/*********************************/'
+    print('/*********************************/')
     structdeflist = database.getstructdeflist()
     for node in structdeflist:
         for line in node.definition():
-            print line
-    print
+            print(line)
+    print()
     for node in database.globalcontainers():
         for line in node.forward_declaration():
-            print line
+            print(line)
     for node in database.globalcontainers():
-        print
+        print()
         for line in node.implementation():
-            print line
+            print(line)
 
 
 def test_primitive():

@@ -23,9 +23,9 @@ class MockAssembler:
         self.ops.append(('pop', loc))
 
     def got(self, expected):
-        print '------------------------ comparing ---------------------------'
+        print('------------------------ comparing ---------------------------')
         for op1, op2 in zip(self.ops, expected):
-            print '%-38s| %-38s' % (op1, op2)
+            print('%-38s| %-38s' % (op1, op2))
             if op1 == op2:
                 continue
             assert len(op1) == len(op2)

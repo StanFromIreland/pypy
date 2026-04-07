@@ -326,7 +326,7 @@ def test_sizeof():
 
 def test_memory_alignment():
     a = rffi_platform.memory_alignment()
-    print a
+    print(a)
     assert a % struct.calcsize("P") == 0
 
 def test_external_lib():

@@ -72,7 +72,7 @@ def test_terminate_process():
                          "time.sleep(10)",
                          ],
                         )
-    print proc.pid
+    print(proc.pid)
     handle = rwin32.OpenProcess(rwin32.PROCESS_ALL_ACCESS, False, proc.pid)
     assert rwin32.TerminateProcess(handle, signal.SIGTERM) == 1
     rwin32.CloseHandle(handle)
@@ -86,7 +86,7 @@ def test_wenviron():
     assert rwin32._wgetenv(name) == value
     env = dict(rwin32._wenviron_items())
     assert env[name] == value
-    for key, value in env.iteritems():
+    for key, value in env.items():
         assert type(key) is str
         assert type(value) is str
 

@@ -428,6 +428,8 @@ class TestLowLevelType(object):
         class Undefined:
             def __eq__(self, other):
                 return True
+
+            __hash__ = object.__hash__
         undefined = Undefined()
 
         def getmin(cls):
@@ -472,7 +474,7 @@ class TestLowLevelType(object):
 
         fn = self.getcompiled(f, [int])
         res = fn(1)
-        print res
+        print(res)
         assert eval(res) == (
             # int
             -sys.maxint, undefined,               # add
@@ -509,7 +511,7 @@ class TestLowLevelType(object):
             )
 
         res = fn(5)
-        print res
+        print(res)
         assert eval(res) == (
             # int
             -sys.maxint+4, undefined,             # add
@@ -788,7 +790,8 @@ class TestLowLevelType(object):
         #
         glob_sizes = g()
         #
-        def check((ssize, msize, smsize, mssize)):
+        def check(_tup0):
+            ssize, msize, smsize, mssize = _tup0
             if is_arm:
                 # ARM has stronger rules about aligned memory access
                 # so according to the rules for round_up_for_allocation

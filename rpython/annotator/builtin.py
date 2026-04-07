@@ -188,10 +188,12 @@ def builtin_max(*s_values):
         return s
 
 # collect all functions
-import __builtin__
-for name, value in globals().items():
+import builtins as __builtin__
+for name, value in list(globals().items()):
     if name.startswith('builtin_'):
-        original = getattr(__builtin__, name[8:])
+        original = getattr(__builtin__, name[8:], None)
+        if original is None:
+            continue
         BUILTIN_ANALYZERS[original] = value
 
 

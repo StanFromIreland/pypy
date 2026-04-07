@@ -27,15 +27,15 @@ def main2(l, count):
 
 def entry_point(argv):
     if len(argv) < 3:
-        print "Usage: jitstandalone <count1> <count2>"
-        print "runs a total of '2 * count1 * count2' iterations"
+        print("Usage: jitstandalone <count1> <count2>")
+        print("runs a total of '2 * count1 * count2' iterations")
         return 0
     count1 = int(argv[1])
     count2 = int(argv[2])
     s = 0
     for i in range(count1):
         s += len(main(count2))
-    print s
+    print(s)
     return 0
 
 def target(*args):

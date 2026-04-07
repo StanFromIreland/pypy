@@ -12,9 +12,9 @@ def get_llinterp_args():
 
 # _____ Run translated _____
 def run(c_entry_point):
-    print "Translated:"
+    print("Translated:")
     richards.main(c_entry_point, iterations=500)
-    print "CPython:"
+    print("CPython:")
     richards.main(iterations=5)
 
     

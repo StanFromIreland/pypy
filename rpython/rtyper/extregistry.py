@@ -1,5 +1,8 @@
 import weakref
-import UserDict
+try:
+    from UserDict import DictMixin
+except ImportError:
+    from collections.abc import MutableMapping as DictMixin
 from rpython.tool.uid import Hashable
 
 
@@ -30,8 +33,7 @@ class AutoRegisteringType(type):
         selfcls._register(EXT_REGISTRY_BY_TYPE, key)
 
 
-class ExtRegistryEntry(object):
-    __metaclass__ = AutoRegisteringType
+class ExtRegistryEntry(object, metaclass=AutoRegisteringType):
 
     def __init__(self, type, instance=None):
         self.type = type
@@ -73,7 +75,7 @@ class ExtRegistryEntry(object):
 
 # ____________________________________________________________
 
-class FlexibleWeakDict(UserDict.DictMixin):
+class FlexibleWeakDict(DictMixin):
     """A WeakKeyDictionary that accepts more or less anything as keys:
     weakly referenceable objects or not, hashable objects or not.
     """
@@ -107,9 +109,15 @@ class FlexibleWeakDict(UserDict.DictMixin):
         del d[key]
 
     def keys(self):
-        return (self._regdict.keys() +
-                self._weakdict.keys() +
+        return (list(self._regdict.keys()) +
+                list(self._weakdict.keys()) +
                 [hashable.value for hashable in self._iddict])
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self._regdict) + len(self._weakdict) + len(self._iddict)
 
 
 EXT_REGISTRY_BY_VALUE = FlexibleWeakDict()

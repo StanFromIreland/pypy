@@ -115,7 +115,7 @@ def format_simple_call(annotator, oper, msg):
             try:
                 if isinstance(func, type):
                     func_name = "%s.__init__" % func.__name__
-                    func = func.__init__.im_func
+                    func = func.__init__.__func__
                 else:
                     func_name = func.__name__
                 r = "function %s <%s, line %s>" % (func_name,

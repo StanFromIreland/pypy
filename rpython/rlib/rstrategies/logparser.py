@@ -2,6 +2,7 @@ from __future__ import print_function
 
 
 import re, os, sys, operator
+from functools import reduce
 
 """
 This script parses a log produced by rstrategies_logger.py into a graph and converts it to various outputs.
@@ -462,8 +463,7 @@ class StorageGraph(object):
         self.collapse_nodes(nodes, new_name)
 
     def sorted_nodes(self):
-        nodes = self.nodes.values()
-        nodes.sort()
+        nodes = sorted(self.nodes.values())
         return nodes
 
 def make_graph(logfile, flags):
@@ -622,8 +622,7 @@ def dot_string(graph, flags):
 
 def command_aggregate(logfile, flags):
     graph = make_graph(logfile, flags)
-    edges = graph.edges.values()
-    edges.sort()
+    edges = sorted(graph.edges.values())
     for edge in edges:
         logentries = edge.as_log_entries()
         logentries.sort()

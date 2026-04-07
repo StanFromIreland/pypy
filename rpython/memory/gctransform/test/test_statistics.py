@@ -24,9 +24,9 @@ def test_count_vars_big():
     backend_optimizations(t)
     # does not crash
     rel = relevant_gcvars(t)
-    print rel
-    print sum(rel) / float(len(rel)), max(rel), min(rel)
+    print(rel)
+    print(sum(rel) / float(len(rel)), max(rel), min(rel))
 
     rel = relevant_gcvars(t, filter_for_nongcptr)
-    print rel
-    print sum(rel) / float(len(rel)), max(rel), min(rel)
+    print(rel)
+    print(sum(rel) / float(len(rel)), max(rel), min(rel))

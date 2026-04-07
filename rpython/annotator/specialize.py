@@ -131,7 +131,7 @@ class MemoTable(object):
             return
         assert self.graph is None, "MemoTable already finished"
         # list of which argument positions can take more than one value
-        example_args, example_value = self.table.iteritems().next()
+        example_args, example_value = self.table.items().next()
         nbargs = len(example_args)
         # list of sets of possible argument values -- one set per argument index
         sets = [set() for i in range(nbargs)]
@@ -148,7 +148,7 @@ class MemoTable(object):
             header = "def f(%s):" % (', '.join(argnames[firstarg:],))
             source = py.code.Source(stmt)
             source = source.putaround(header)
-            exec source.compile() in miniglobals
+            exec(source.compile(), miniglobals)
             f = miniglobals['f']
             return func_with_new_name(f, 'memo_%s_%d' % (name, firstarg))
 

@@ -29,10 +29,10 @@ def test_basics():
     # simple array
     Ar = GcArray(('v', Signed))
     x = malloc(Ar,0)
-    print x
+    print(x)
     assert len(x) == 0
     x = malloc(Ar,3)
-    print x
+    print(x)
     assert typeOf(x) == Ptr(Ar)
     assert isweak(x[0], Ar.OF)
     x[0].v = 1
@@ -836,7 +836,7 @@ class TestTrackAllocation:
         assert 'malloc(' in lines[-1] and 'flavor="raw")' in lines[-1]
 
         # The traceback should not be too long
-        print traceback
+        print(traceback)
 
         free(buf, flavor="raw")
 

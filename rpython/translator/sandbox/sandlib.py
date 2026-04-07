@@ -91,7 +91,7 @@ def write_exception(g, exception, tb=None):
             break
     else:
         # just re-raise the exception
-        raise exception.__class__, exception, tb
+        raise exception.__class__(exception).with_traceback(tb)
 
 def shortrepr(x):
     r = repr(x)
@@ -147,7 +147,7 @@ class SandboxedProc(object):
         """Start a timeout that will kill the subprocess after the given
         amount of time.  Only one timeout can be active at a time.
         """
-        import thread
+        import _thread
 
         def _waiting_thread():
             while True:
@@ -174,10 +174,10 @@ class SandboxedProc(object):
             need_new_thread = self.currenttimeout is None
             self.currenttimeout = time.time() + timeout
             if need_new_thread:
-                thread.start_new_thread(_waiting_thread, ())
+                _thread.start_new_thread(_waiting_thread, ())
 
         if self.popenlock is None:
-            self.popenlock = thread.allocate_lock()
+            self.popenlock = _thread.allocate_lock()
         self.withlock(_settimeout)
 
     def canceltimeout(self):
@@ -297,13 +297,13 @@ class SimpleIOSandboxedProc(SandboxedProc):
         """Send data to stdin. Read data from stdout and stderr,
         until end-of-file is reached. Wait for process to terminate.
         """
-        import cStringIO
+        import io
         if input:
             if isinstance(input, str):
-                input = cStringIO.StringIO(input)
+                input = io.StringIO(input)
             self._input = input
-        self._output = cStringIO.StringIO()
-        self._error = cStringIO.StringIO()
+        self._output = io.StringIO()
+        self._error = io.StringIO()
         self.handle_forever()
         output = self._output.getvalue()
         self._output = None

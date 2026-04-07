@@ -93,7 +93,7 @@ def dis(x=None):
     if type(x) is types.InstanceType:
         x = x.__class__
     if hasattr(x, 'im_func'):
-        x = x.im_func
+        x = x.__func__
     if hasattr(x, 'func_code'):
         x = x.__code__
     if hasattr(x, '__dict__'):
@@ -103,7 +103,7 @@ def dis(x=None):
             if type(x1) in (types.MethodType,
                             types.FunctionType,
                             types.CodeType,
-                            types.ClassType):
+                            type):
                 print("Disassembly of %s:" % name)
                 try:
                     dis(x1)

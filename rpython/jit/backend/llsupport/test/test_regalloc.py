@@ -84,6 +84,8 @@ class FakeFramePos(object):
         return 'FramePos<%d,%s>' % (self.pos, self.box_type)
     def __eq__(self, other):
         return self.pos == other.pos and self.box_type == other.box_type
+
+    __hash__ = object.__hash__
     def __ne__(self, other):
         return not self == other
 

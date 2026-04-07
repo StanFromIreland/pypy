@@ -58,8 +58,7 @@ class ControllerEntryForPrebuilt(ExtRegistryEntry):
         return self._controller_()
 
 
-class Controller(object):
-    __metaclass__ = cachedtype
+class Controller(object, metaclass=cachedtype):
     can_be_None = False
 
     def _freeze_(self):
@@ -189,19 +188,23 @@ class SomeControlledInstance(annmodel.SomeObject):
 
 class __extend__(pairtype(SomeControlledInstance, annmodel.SomeObject)):
 
-    def getitem((s_cin, s_key)):
+    def getitem(_tup0):
+        s_cin, s_key = _tup0
         return delegate(s_cin.controller.getitem, s_cin.s_real_obj, s_key)
 
-    def setitem((s_cin, s_key), s_value):
+    def setitem(_tup0, s_value):
+        s_cin, s_key = _tup0
         delegate(s_cin.controller.setitem, s_cin.s_real_obj, s_key, s_value)
 
-    def delitem((s_cin, s_key)):
+    def delitem(_tup0):
+        s_cin, s_key = _tup0
         delegate(s_cin.controller.delitem, s_cin.s_real_obj, s_key)
 
 
 class __extend__(pairtype(SomeControlledInstance, SomeControlledInstance)):
 
-    def union((s_cin1, s_cin2)):
+    def union(_tup0):
+        s_cin1, s_cin2 = _tup0
         if s_cin1.controller is not s_cin2.controller:
             raise annmodel.UnionError("different controller!")
         return SomeControlledInstance(annmodel.unionof(s_cin1.s_real_obj,
@@ -241,13 +244,16 @@ class ControlledInstanceRepr(Repr):
 
 class __extend__(pairtype(ControlledInstanceRepr, Repr)):
 
-    def rtype_getitem((r_controlled, r_key), hop):
+    def rtype_getitem(_tup0, hop):
+        r_controlled, r_key = _tup0
         return rtypedelegate(r_controlled.controller.getitem, hop)
 
-    def rtype_setitem((r_controlled, r_key), hop):
+    def rtype_setitem(_tup0, hop):
+        r_controlled, r_key = _tup0
         return rtypedelegate(r_controlled.controller.setitem, hop)
 
-    def rtype_delitem((r_controlled, r_key), hop):
+    def rtype_delitem(_tup0, hop):
+        r_controlled, r_key = _tup0
         return rtypedelegate(r_controlled.controller.delitem, hop)
 
 

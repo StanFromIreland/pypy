@@ -31,6 +31,7 @@ from __future__ import absolute_import
 
 import inspect
 import math
+from functools import reduce
 import weakref
 from types import BuiltinFunctionType, MethodType
 from collections import OrderedDict, defaultdict
@@ -48,10 +49,9 @@ class State(object):
     allow_int_to_float = True
 TLS = State()
 
-class SomeObject(object):
+class SomeObject(object, metaclass=extendabletype):
     """The set of all objects.  Each instance stands
     for an arbitrary object about which nothing is known."""
-    __metaclass__ = extendabletype
     immutable = False
     knowntype = object
 
@@ -65,6 +65,9 @@ class SomeObject(object):
     def __ne__(self, other):
         return not (self == other)
 
+    def __hash__(self):
+        return id(self)
+
     def __repr__(self):
         try:
             reprdict = TLS.reprdict
@@ -75,8 +78,7 @@ class SomeObject(object):
         else:
             reprdict[self] = True
             try:
-                items = self.__dict__.items()
-                items.sort()
+                items = sorted(self.__dict__.items())
                 args = []
                 for k, v in items:
                     m = getattr(self, 'fmt_' + k, repr)
@@ -179,6 +181,8 @@ class SomeFloat(SomeObject):
             #
         return super(SomeFloat, self).__eq__(other)
 
+    __hash__ = SomeObject.__hash__
+
     def can_be_none(self):
         return False
 
@@ -275,6 +279,8 @@ class SomeStringOrUnicode(SomeObject):
             d2['no_nul'] = 0
         return d1 == d2
 
+    __hash__ = object.__hash__
+
     def nonnoneify(self):
         return self.__class__(can_be_None=False, no_nul=self.no_nul)
 
@@ -347,6 +353,8 @@ class SomeList(SomeObject):
         del otherdic['listdef']
         return selfdic == otherdic
 
+    __hash__ = object.__hash__
+
     def can_be_none(self):
         return True
 
@@ -388,6 +396,8 @@ class SomeDict(SomeObject):
         del selfdic['dictdef']
         del otherdic['dictdef']
         return selfdic == otherdic
+
+    __hash__ = object.__hash__
 
     def can_be_none(self):
         return True
@@ -553,7 +563,7 @@ class SomePBC(SomeObject):
                         "RPython that are different underlying functions")
 
     def any_description(self):
-        return iter(self.descriptions).next()
+        return next(iter(self.descriptions))
 
     def getKind(self):
         "Return the common Desc class of all descriptions in this PBC."
@@ -634,9 +644,9 @@ class SomeBuiltin(SomeObject):
     def __init__(self, analyser, s_self=None, methodname=None):
         if isinstance(analyser, MethodType):
             analyser = descriptor.InstanceMethod(
-                analyser.im_func,
-                analyser.im_self,
-                analyser.im_class)
+                analyser.__func__,
+                analyser.__self__,
+                type(analyser.__self__))
         self.analyser = analyser
         self.s_self = s_self
         self.methodname = methodname
@@ -651,9 +661,9 @@ class SomeBuiltinMethod(SomeBuiltin):
     def __init__(self, analyser, s_self, methodname):
         if isinstance(analyser, MethodType):
             analyser = descriptor.InstanceMethod(
-                analyser.im_func,
-                analyser.im_self,
-                analyser.im_class)
+                analyser.__func__,
+                analyser.__self__,
+                type(analyser.__self__))
         self.analyser = analyser
         self.s_self = s_self
         self.methodname = methodname

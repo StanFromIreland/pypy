@@ -129,8 +129,7 @@ class ClassAttrFamily(object):
 
 # ____________________________________________________________
 
-class Desc(object):
-    __metaclass__ = extendabletype
+class Desc(object, metaclass=extendabletype):
 
     def __init__(self, bookkeeper, pyobj=None):
         self.bookkeeper = bookkeeper
@@ -387,7 +386,7 @@ class FunctionDesc(Desc):
                 s_sigs.append(s_sig)
 
             for row in table:
-                for graph in row.itervalues():
+                for graph in row.values():
                     enlist(graph)
 
             return s_sigs

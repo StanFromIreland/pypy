@@ -14,7 +14,7 @@ class setupstate(object):
     FINISHED = 3
     DELAYED = 4
 
-class Repr(object):
+class Repr(object, metaclass=extendabletype):
     """ An instance of Repr is associated with each instance of SomeXxx.
     It defines the chosen representation for the SomeXxx.  The Repr subclasses
     generally follows the SomeXxx subclass hierarchy, but there are numerous
@@ -22,7 +22,6 @@ class Repr(object):
     we need different representations according to the type of container we are
     iterating over.
     """
-    __metaclass__ = extendabletype
     _initialized = setupstate.NOTINITIALIZED
     __NOT_RPYTHON__ = True
 
@@ -297,7 +296,8 @@ class __extend__(annmodel.SomeImpossibleValue):
 
 class __extend__(pairtype(Repr, Repr)):
 
-    def rtype_is_((robj1, robj2), hop):
+    def rtype_is_(_tup0, hop):
+        robj1, robj2 = _tup0
         if hop.s_result.is_constant():
             return inputconst(Bool, hop.s_result.const)
         roriginal1 = robj1
@@ -320,7 +320,8 @@ class __extend__(pairtype(Repr, Repr)):
 
     # default implementation for checked getitems
 
-    def rtype_getitem_idx((r_c1, r_o1), hop):
+    def rtype_getitem_idx(_tup0, hop):
+        r_c1, r_o1 = _tup0
         return pair(r_c1, r_o1).rtype_getitem(hop)
 
 
@@ -345,7 +346,8 @@ for opname in binaryop.BINARY_OPERATIONS:
 make_missing_op(pairtype(Repr, Repr), 'contains')
 
 class __extend__(pairtype(Repr, Repr)):
-    def convert_from_to((r_from, r_to), v, llops):
+    def convert_from_to(_tup0, v, llops):
+        r_from, r_to = _tup0
         return NotImplemented
 
 # ____________________________________________________________
@@ -359,7 +361,8 @@ class VoidRepr(Repr):
 impossible_repr = VoidRepr()
 
 class __extend__(pairtype(Repr, VoidRepr)):
-    def convert_from_to((r_from, r_to), v, llops):
+    def convert_from_to(_tup0, v, llops):
+        r_from, r_to = _tup0
         return inputconst(lltype.Void, None)
 
 class SimplePointerRepr(Repr):

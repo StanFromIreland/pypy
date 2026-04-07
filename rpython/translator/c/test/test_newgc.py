@@ -37,9 +37,9 @@ class UsingFrameworkTest(object):
             try:
                 res = f(arg0, arg1)
             except MemoryError:
-                print "MEMORY-ERROR"
+                print("MEMORY-ERROR")
             else:
-                print res
+                print(res)
             return 0
 
         t = Translation(main, gc=cls.gcpolicy,
@@ -76,14 +76,14 @@ class UsingFrameworkTest(object):
                     continue
             prefix, name = fullname.split('_', 1)
             definefunc = getattr(cls, fullname)
-            func = definefunc.im_func(cls)
+            func = definefunc.__func__(cls)
             func.__name__ = 'f_' + name
             if prefix == 'definestr':
                 funcsstr.append(func)
                 funcs0.append(None)
                 funcs1.append(None)
             else:
-                numargs = len(inspect.getargspec(func)[0])
+                numargs = len(inspect.getfullargspec(func)[0])
                 funcsstr.append(None)
                 if numargs == 0:
                     funcs0.append(func)
@@ -121,7 +121,7 @@ class UsingFrameworkTest(object):
     def run(self, name, *args, **kwds):
         if not args:
             args = (-1, )
-        print 'Running %r)' % name
+        print('Running %r)' % name)
         res = self.c_allfuncs(name, *args, **kwds)
         num = self.name_to_func[name]
         if self.funcsstr[num]:
@@ -699,11 +699,11 @@ class UsingFrameworkTest(object):
     def define_open_read_write_seek_close(cls):
         filename = cls.filename
         def does_stuff():
-            fd = os.open(filename, os.O_WRONLY | os.O_CREAT, 0777)
+            fd = os.open(filename, os.O_WRONLY | os.O_CREAT, 0o777)
             count = os.write(fd, "hello world\n")
             assert count == len("hello world\n")
             os.close(fd)
-            fd = os.open(filename, os.O_RDONLY, 0777)
+            fd = os.open(filename, os.O_RDONLY, 0o777)
             result = os.lseek(fd, 1, 0)
             assert result == 1
             data = os.read(fd, 500)
@@ -1163,8 +1163,8 @@ class UsingFrameworkTest(object):
             a = lltype.malloc(A, 1000)
             s2 = lltype.malloc(S)
             #
-            fd1 = os.open(filename1, os.O_WRONLY | os.O_CREAT, 0666)
-            fd2 = os.open(filename2, os.O_WRONLY | os.O_CREAT, 0666)
+            fd1 = os.open(filename1, os.O_WRONLY | os.O_CREAT, 0o666)
+            fd2 = os.open(filename2, os.O_WRONLY | os.O_CREAT, 0o666)
             # try to ensure we get twice the exact same output below
             gc.collect(); gc.collect(); gc.collect()
             rgc.dump_rpy_heap(fd1)
@@ -1211,7 +1211,7 @@ class UsingFrameworkTest(object):
             #
             p = rgc.get_typeids_z()
             s = ''.join([p[i] for i in range(len(p))])
-            fd = os.open(filename, open_flags, 0666)
+            fd = os.open(filename, open_flags, 0o666)
             os.write(fd, s)
             os.close(fd)
             #
@@ -1687,7 +1687,7 @@ class TestMiniMarkGC(TestSemiSpaceGC):
         #
         for i in range(10):
             gcmax = random.randrange(50000, 100000)
-            print gcmax
+            print(gcmax)
             res = self.run("limited_memory", -1, runner=myrunner)
             assert res == 42
 
@@ -1776,7 +1776,7 @@ class TestIncrementalMiniMarkGC(TestMiniMarkGC):
         res = self.run("random_pin")
         assert res == 28495
 
-    define_limited_memory_linux = TestMiniMarkGC.define_limited_memory.im_func
+    define_limited_memory_linux = TestMiniMarkGC.define_limited_memory.__func__
 
     def test_limited_memory_linux(self):
         if not sys.platform.startswith('linux'):
@@ -1799,7 +1799,7 @@ class TestIncrementalMiniMarkGC(TestMiniMarkGC):
         #
         for i in range(10):
             ulimitv = random.randrange(50000, 100000)
-            print ulimitv
+            print(ulimitv)
             res = self.run("limited_memory_linux", -1, runner=myrunner)
             assert res == 42
 
@@ -1897,11 +1897,11 @@ class TestIncrementalMiniMarkGC(TestMiniMarkGC):
                 if rgc.is_done(val):
                     break
                 if n == 100:
-                    print 'Endless loop!'
+                    print('Endless loop!')
                     assert False, 'this looks like an endless loop'
 
             if n < 4: # we expect at least 4 steps
-                print 'Too few steps! n =', n
+                print('Too few steps! n =', n)
                 assert False
 
             # check that the state transitions are reasonable

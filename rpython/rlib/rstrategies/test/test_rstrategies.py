@@ -17,6 +17,8 @@ class W_Integer(W_AbstractObject):
     def __eq__(self, other):
         return isinstance(other, W_Integer) and self.value == other.value
 
+    __hash__ = object.__hash__
+
 class W_List(W_AbstractObject):
     rs.make_accessors()
     def __init__(self, strategy=None, size=0, elements=None):
@@ -58,8 +60,7 @@ w_nil = W_Object()
 
 # === Define concrete strategy classes
 
-class AbstractStrategy(object):
-    __metaclass__ = rs.StrategyMetaclass
+class AbstractStrategy(object, metaclass=rs):
     import_from_mixin(rs.AbstractStrategy)
     import_from_mixin(rs.SafeIndexingMixin)
     def __init__(self, factory, w_self=None, size=0):

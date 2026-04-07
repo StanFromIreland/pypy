@@ -34,7 +34,7 @@ def test_thread_error():
         py.test.fail("Did not raise")
 
 def test_tlref_untranslated():
-    import thread
+    import _thread
     class FooBar(object):
         pass
     t = ThreadLocalReference(FooBar)
@@ -47,13 +47,13 @@ def test_tlref_untranslated():
         time.sleep(0.2)
         results.append(t.get() is x)
     for i in range(5):
-        thread.start_new_thread(subthread, ())
+        _thread.start_new_thread(subthread, ())
     time.sleep(0.5)
     assert results == [True] * 15
 
 def test_get_ident():
-    import thread
-    assert get_ident() == thread.get_ident()
+    import _thread
+    assert get_ident() == _thread.get_ident()
 
 
 def test_threadlocalref_on_llinterp():
@@ -161,7 +161,7 @@ class AbstractThreadTests(AbstractGCTestClass):
                 willing_to_wait_more -= 1
                 done = len(state.answers) == expected
 
-                print "waitting %d more iterations" % willing_to_wait_more
+                print("waitting %d more iterations" % willing_to_wait_more)
                 time.sleep(0.01)
 
             time.sleep(0.1)

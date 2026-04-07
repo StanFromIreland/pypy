@@ -41,7 +41,7 @@ def BitVec(name):
 
 def z3_with_reduced_bitwidth(width):
     def dec(test):
-        assert test.func_name.endswith("logic") # doesn't work for code in intutils.py
+        assert test.__name__.endswith("logic") # doesn't work for code in intutils.py
         def newtest(*args, **kwargs):
             global LONG_BIT, MAXINT, MININT
             old_value = LONG_BIT
@@ -54,7 +54,7 @@ def z3_with_reduced_bitwidth(width):
                 LONG_BIT = old_value
                 MAXINT = sys.maxint
                 MININT = -sys.maxint - 1
-        newtest.func_name = test.func_name + "_wrapped"
+        newtest.__name__ = test.__name__ + "_wrapped"
         return newtest
     return dec
 
@@ -128,7 +128,7 @@ def prove(cond, use_timeout=True):
     if z3res == z3.unsat:
         pass
     elif z3res == z3.unknown:
-        print "timeout", cond
+        print("timeout", cond)
         assert use_timeout
     elif z3res == z3.sat:
         # not possible to prove!
@@ -245,7 +245,7 @@ def test_known(b1, b2):
 @given(bounds, bounds)
 def test_mod(b1, b2):
     b3 = b1.mod_bound(b2)
-    print b1, b2, b3
+    print(b1, b2, b3)
     var1, formula1 = to_z3(b1)
     var2, formula2 = to_z3(b2)
     var3, nonzero = z3_pymod_nonzero(var1, var2)
@@ -310,7 +310,7 @@ def test_shrink_knownbits_to_bounds(x, y):
 
 @given(ints, ints, uints, uints)
 def test_shrink_mixed(x, y, value, tmask):
-    print x, y, value, tmask
+    print(x, y, value, tmask)
     x, y = sorted([x, y])
     b = IntBound(x, y, value & ~tmask, tmask, do_shrinking=False)
     var1, formula1 = to_z3(b)
@@ -416,12 +416,12 @@ def z3_mul_overflow(a, b):
 
 def s(p):
     if p.sort() == z3.BoolSort():
-        print model.evaluate(p)
+        print(model.evaluate(p))
     else:
-        print hex(model.evaluate(p).as_signed_long())
+        print(hex(model.evaluate(p).as_signed_long()))
 
 def u(p):
-    print "r_uint(%s)" % bin(model.evaluate(p).as_long())
+    print("r_uint(%s)" % bin(model.evaluate(p).as_long()))
 
 class Z3IntBound(IntBound):
     def __init__(self, lower, upper, tvalue, tmask, concrete_variable=None):
@@ -630,8 +630,8 @@ class Z3IntBound(IntBound):
         except CheckError as e:
             model = e.args[1]
             example_self = self.convert_to_concrete(model)
-            print "ERROR", args
-            print "COUNTEREXAMPLE", example_self
+            print("ERROR", args)
+            print("COUNTEREXAMPLE", example_self)
             assert 0
 
 def make_z3_intbounds_instance(name, concrete_variable=None):

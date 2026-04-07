@@ -1,10 +1,17 @@
 """
 Bytecode handling classes and functions for use by the flow space.
 """
+import sys
 from rpython.tool.stdlib_opcode import host_bytecode_spec
 from opcode import EXTENDED_ARG, HAVE_ARGUMENT
 import opcode
 from rpython.flowspace.argument import Signature
+
+if sys.version_info[0] >= 3:
+    def _byte(x):
+        return x  # bytes[i] is already an int in Python 3
+else:
+    _byte = ord
 
 try:
     from __pypy__ import _promote
@@ -35,7 +42,7 @@ def cpython_code_signature(code):
 class BytecodeCorruption(Exception):
     pass
 
-HASJREL = b"".join([chr(_opnum in opcode.hasjrel) for _opnum in range(256)])
+HASJREL = bytes([_opnum in opcode.hasjrel for _opnum in range(256)])
 
 class HostCode(object):
     """
@@ -94,28 +101,42 @@ class HostCode(object):
         Returns (next_offset, opname, oparg).
         """
         co_code = self.co_code
-        opnum = ord(co_code[offset])
-        next_offset = offset + 1
+        if sys.version_info >= (3, 6):
+            # Python 3.6+ wordcode: fixed 2-byte instructions
+            opnum = _byte(co_code[offset])
+            oparg = _byte(co_code[offset + 1])
+            next_offset = offset + 2
 
-        if opnum >= HAVE_ARGUMENT:
-            lo = ord(co_code[next_offset])
-            hi = ord(co_code[next_offset + 1])
-            next_offset += 2
-            oparg = (hi * 256) | lo
+            while opnum == EXTENDED_ARG:
+                opnum = _byte(co_code[next_offset])
+                oparg = (oparg << 8) | _byte(co_code[next_offset + 1])
+                next_offset += 2
+
+            if _byte(HASJREL[opnum]):
+                oparg = oparg * 2 + next_offset
         else:
-            oparg = 0
+            opnum = _byte(co_code[offset])
+            next_offset = offset + 1
 
-        while opnum == EXTENDED_ARG:
-            opnum = ord(co_code[next_offset])
-            if opnum < HAVE_ARGUMENT:
-                raise BytecodeCorruption
-            lo = ord(co_code[next_offset + 1])
-            hi = ord(co_code[next_offset + 2])
-            next_offset += 3
-            oparg = (oparg * 65536) | (hi * 256) | lo
+            if opnum >= HAVE_ARGUMENT:
+                lo = _byte(co_code[next_offset])
+                hi = _byte(co_code[next_offset + 1])
+                next_offset += 2
+                oparg = (hi * 256) | lo
+            else:
+                oparg = 0
 
-        if ord(HASJREL[opnum]):
-            oparg += next_offset
+            while opnum == EXTENDED_ARG:
+                opnum = _byte(co_code[next_offset])
+                if opnum < HAVE_ARGUMENT:
+                    raise BytecodeCorruption
+                lo = _byte(co_code[next_offset + 1])
+                hi = _byte(co_code[next_offset + 2])
+                next_offset += 3
+                oparg = (oparg * 65536) | (hi * 256) | lo
+
+            if _byte(HASJREL[opnum]):
+                oparg += next_offset
         opname = self.opnames[_promote(opnum)]
         return next_offset, opname, oparg
 

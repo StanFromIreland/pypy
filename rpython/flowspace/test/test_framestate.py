@@ -7,7 +7,7 @@ from rpython.flowspace.pygraph import PyGraph
 class TestFrameState:
     def get_context(self, func):
         try:
-            func = func.im_func
+            func = func.__func__
         except AttributeError:
             pass
         code = HostCode._from_code(func.__code__)

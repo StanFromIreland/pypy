@@ -214,7 +214,7 @@ def llexternal(name, args, result, _callable=None,
                        '__name__':    __name__, # for module name propagation
                        'we_are_translated': we_are_translated,
                        }
-        exec source.compile() in miniglobals
+        exec(source.compile(), miniglobals)
         call_external_function = miniglobals['call_external_function']
         call_external_function._dont_inline_ = True
         call_external_function._annspecialcase_ = 'specialize:ll'
@@ -261,7 +261,7 @@ def llexternal(name, args, result, _callable=None,
             miniglobals = {'funcptr':     funcptr,
                            '__name__':    __name__,
                            }
-            exec source.compile() in miniglobals
+            exec(source.compile(), miniglobals)
             call_external_function = miniglobals['call_external_function']
             call_external_function = func_with_new_name(call_external_function,
                                                         'ccall_' + name)
@@ -397,7 +397,7 @@ def _make_wrapper_for(TP, callable, callbackholder, use_gil):
     miniglobals['Exception'] = Exception
     miniglobals['os'] = os
     miniglobals['we_are_translated'] = we_are_translated
-    exec source.compile() in miniglobals
+    exec(source.compile(), miniglobals)
     return miniglobals['wrapper']
 _make_wrapper_for._annspecialcase_ = 'specialize:memo'
 
@@ -1251,11 +1251,11 @@ def sizeof(tp):
         return size
     if (tp is lltype.Signed or isinstance(tp, lltype.Ptr)
                             or tp is llmemory.Address):
-        return LONG_BIT/8
+        return LONG_BIT//8
     if tp is lltype.Char or tp is lltype.Bool:
         return 1
     if tp is lltype.UniChar:
-        return r_wchar_t.BITS/8
+        return r_wchar_t.BITS//8
     if tp is lltype.Float:
         return 8
     if tp is lltype.SingleFloat:
@@ -1264,7 +1264,7 @@ def sizeof(tp):
         # :-/
         return sizeof_c_type("long double")
     assert isinstance(tp, lltype.Number)
-    return tp._type.BITS/8
+    return tp._type.BITS//8
 sizeof._annspecialcase_ = 'specialize:memo'
 
 def offsetof(STRUCT, fieldname):
@@ -1283,7 +1283,7 @@ def offsetof(STRUCT, fieldname):
 offsetof._annspecialcase_ = 'specialize:memo'
 
 # check that we have a sane configuration
-assert maxint == (1 << (8 * sizeof(llmemory.Address) - 1)) - 1, (
+assert maxint == (1 << (8 * int(sizeof(llmemory.Address)) - 1)) - 1, (
     "Mixed configuration of the word size of the machine:\n\t"
     "the underlying Python was compiled with maxint=%d,\n\t"
     "but the C compiler says that 'void *' is %d bytes" % (

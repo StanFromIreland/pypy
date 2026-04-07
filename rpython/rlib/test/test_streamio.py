@@ -693,7 +693,7 @@ class TestMMapFile(BaseTestBufferingInputStreamTests):
             try:
                 os.remove(tfn)
             except os.error as msg:
-                print "can't remove %s: %s" % (tfn, msg)
+                print("can't remove %s: %s" % (tfn, msg))
 
     def makeStream(self, tell=None, seek=None, bufsize=-1, mode="r"):
         mmapmode = 0
@@ -1189,8 +1189,8 @@ def timeit(fn=FN, opener=streamio.MMapFile):
         lines += 1
         bytes += len(line)
     t1 = time.clock()
-    print "%d lines (%d bytes) in %.3f seconds for %s" % (
-        lines, bytes, t1-t0, opener.__name__)
+    print("%d lines (%d bytes) in %.3f seconds for %s" % (
+        lines, bytes, t1-t0, opener.__name__))
 
 def speed_main():
     def diskopen(fn, mode):

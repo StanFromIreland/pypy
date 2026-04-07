@@ -142,7 +142,7 @@ class BaseFrameworkTests(object):
                 continue
             definefunc = getattr(cls, fullname)
             _, name = fullname.split('_', 1)
-            beforefunc, loopfunc, afterfunc = definefunc.im_func(cls)
+            beforefunc, loopfunc, afterfunc = definefunc.__func__(cls)
             if beforefunc is None:
                 def beforefunc(n, x):
                     return n, x, None, None, None, None, None, None, None, None, None, ''

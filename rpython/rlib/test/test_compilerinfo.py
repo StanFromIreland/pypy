@@ -22,5 +22,5 @@ def test_compiled():
         lst.append(chr(c))
         index += 1
     s = ''.join(lst)
-    print s
+    print(s)
     assert s.startswith('MSC ') or s.startswith('GCC ')

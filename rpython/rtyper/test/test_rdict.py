@@ -189,11 +189,11 @@ class BaseTestRDict(BaseRtypingTest):
             d['hello'] = 6
             d['world'] = 7
             k1 = k2 = k3 = 1
-            for key in d.iterkeys():
+            for key in d.keys():
                 k1 = k1 * d[key]
-            for value in d.itervalues():
+            for value in d.values():
                 k2 = k2 * value
-            for key, value in d.iteritems():
+            for key, value in d.items():
                 assert d[key] == value
                 k3 = k3 * value
             return k1 + k2 + k3
@@ -328,7 +328,7 @@ class BaseTestRDict(BaseRtypingTest):
             dic[A()] = 1
             dic[A()] = 2
             a = 0
-            for k in dic.iterkeys():
+            for k in dic.keys():
                 a += isinstance(k, A)
             return a
         res = self.interpret(func, [])
@@ -364,7 +364,7 @@ class BaseTestRDict(BaseRtypingTest):
             dic[1] = A()
             dic[2] = A()
             a = 0
-            for v in dic.itervalues():
+            for v in dic.values():
                 a += isinstance(v, A)
             return a
         res = self.interpret(func, [])
@@ -408,7 +408,7 @@ class BaseTestRDict(BaseRtypingTest):
             dic[B()] = A()
             b = 0
             a = 0
-            for k, v in dic.iteritems():
+            for k, v in dic.items():
                 b += isinstance(k, B)
                 a += isinstance(v, A)
             return 3*b+a
@@ -678,7 +678,7 @@ class BaseTestRDict(BaseRtypingTest):
             d[6] = 2
             d[7] = 3
             try:
-                for key, value in d.iteritems():
+                for key, value in d.items():
                     d[key^16] = value*2
             except RuntimeError:
                 pass
@@ -1283,7 +1283,7 @@ class MappingSpace(object):
         else:
             ll_key = ll_tuple.item0
             ll_value = ll_tuple.item1
-            for key, value in self.reference.iteritems():
+            for key, value in self.reference.items():
                 if self.ll_key(key) == ll_key:
                     assert self.ll_value(value) == ll_value
                     del self.reference[key]
@@ -1297,7 +1297,7 @@ class MappingSpace(object):
 
     def fullcheck(self):
         assert self.ll_len(self.l_dict) == len(self.reference)
-        for key, value in self.reference.iteritems():
+        for key, value in self.reference.items():
             assert (self.ll_getitem(self.l_dict, self.ll_key(key)) ==
                 self.ll_value(value))
         for key in self.removed_keys:
@@ -1329,7 +1329,7 @@ def st_many_moves(draw, reference):
         key = draw(sampled_from(list(remaining)))
         keys.append(key)
         remaining.remove(key)
-    print("st_many_elements", len(keys), len(reference))
+    print(("st_many_elements", len(keys), len(reference)))
     return (keys, )
 
 class MappingSM(GenericStateMachine):

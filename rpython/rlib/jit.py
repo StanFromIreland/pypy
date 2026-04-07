@@ -172,7 +172,7 @@ def loop_invariant(func):
 def _get_args(func):
     import inspect
 
-    args, varargs, varkw, defaults = inspect.getargspec(func)
+    args, varargs, varkw, defaults, *_ = inspect.getfullargspec(func)
     assert varargs is None and varkw is None
     assert not defaults
     return args
@@ -194,7 +194,7 @@ def elidable_promote(promote_args='all'):
                 (arg, arg))
         code.append("    return _orig_func_unlikely_name(%s)\n" % (argstring, ))
         d = {"_orig_func_unlikely_name": func, "hint": hint}
-        exec py.code.Source("\n".join(code)).compile() in d
+        exec(py.code.Source("\n".join(code)).compile(), d)
         result = d["f"]
         result.__name__ = func.__name__ + "_promote"
         return result
@@ -227,7 +227,7 @@ def look_inside_iff(predicate):
             "func": func,
             "we_are_jitted": we_are_jitted,
         }
-        exec py.code.Source("""
+        exec(py.code.Source("""
             @dont_look_inside
             def trampoline(%(arguments)s):
                 return func(%(arguments)s)
@@ -243,7 +243,7 @@ def look_inside_iff(predicate):
                 else:
                     return trampoline(%(arguments)s)
             f.__name__ = func.__name__ + "_look_inside_iff"
-        """ % {"arguments": ", ".join(args)}).compile() in d
+        """ % {"arguments": ", ".join(args)}).compile(), d)
         return d["f"]
     return inner
 
@@ -452,7 +452,7 @@ def jit_callback(name):
             'jitdriver': jitdriver,
             'real_callback': func,
             }
-        exec compile2(source) in miniglobals
+        exec(compile2(source), miniglobals)
         return miniglobals['callback_with_jitdriver']
     return decorate
 
@@ -889,9 +889,8 @@ class ExtEnterLeaveMarker(ExtRegistryEntry):
         if self.instance.__name__ == 'jit_merge_point':
             self.annotate_hooks(**kwds_s)
 
-        driver = self.instance.im_self
-        keys = kwds_s.keys()
-        keys.sort()
+        driver = self.instance.__self__
+        keys = sorted(kwds_s.keys())
         expected = ['s_' + name for name in driver.greens + driver.reds
                                 if '.' not in name]
         expected.sort()
@@ -923,7 +922,7 @@ class ExtEnterLeaveMarker(ExtRegistryEntry):
         return annmodel.s_None
 
     def annotate_hooks(self, **kwds_s):
-        driver = self.instance.im_self
+        driver = self.instance.__self__
         h = self.annotate_hook
         h(driver.get_printable_location, driver.greens, **kwds_s)
         h(driver.get_location, driver.greens, **kwds_s)
@@ -953,7 +952,7 @@ class ExtEnterLeaveMarker(ExtRegistryEntry):
         # XXX to be complete, this could also check that the concretetype
         # of the variables are the same for each of the calls.
         from rpython.rtyper.lltypesystem import lltype
-        driver = self.instance.im_self
+        driver = self.instance.__self__
         greens_v = []
         reds_v = []
         for name in driver.greens:
@@ -1015,7 +1014,7 @@ class ExtLoopHeader(ExtRegistryEntry):
 
     def specialize_call(self, hop):
         from rpython.rtyper.lltypesystem import lltype
-        driver = self.instance.im_self
+        driver = self.instance.__self__
         hop.exception_cannot_occur()
         vlist = [hop.inputconst(lltype.Void, 'loop_header'),
                  hop.inputconst(lltype.Void, driver)]

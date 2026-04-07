@@ -136,16 +136,16 @@ def run_guards_translated(gcremovetypeptr):
             frame = execute_token(token, p0)
             descr = cpu.get_latest_descr(frame)
             if descr is finaldescr:
-                print 'match'
+                print('match')
             elif descr is faildescr:
-                print 'fail'
+                print('fail')
             else:
-                print '???'
+                print('???')
             #
             if token is token2:    # guard_gc_type
-                print int(cpu.get_actual_typeid(p0) == typeid_B)
+                print(int(cpu.get_actual_typeid(p0) == typeid_B))
             if token is token3:    # guard_is_object
-                print int(cpu.check_is_object(p0))
+                print(int(cpu.check_is_object(p0)))
 
         for p0 in [lltype.nullptr(llmemory.GCREF.TO),
                    rffi.cast(llmemory.GCREF, A()),
@@ -176,7 +176,7 @@ def run_guards_translated(gcremovetypeptr):
                 cpu.protect_speculative_unicode(p0)
             except SpeculativeError:
                 results[4] = '-'
-            print ''.join(results)
+            print(''.join(results))
 
 
     call_initial_function(t, g)

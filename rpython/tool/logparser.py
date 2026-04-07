@@ -193,10 +193,12 @@ def getcolor(category):
         category = category[:-1]
     return COLORS[category]
 
-def getlightercolor((r, g, b)):
+def getlightercolor(_tup0):
+    r, g, b = _tup0
     return ((r*2+255)//3, (g*2+255)//3, (b*2+255)//3)
 
-def getdarkercolor((r, g, b)):
+def getdarkercolor(_tup0):
+    r, g, b = _tup0
     return (r*2//3, g*2//3, b*2//3)
 
 def getlabel(text, _cache={}):
@@ -218,7 +220,8 @@ def getlabel(text, _cache={}):
     _cache[text] = sx, sy, texthoriz, textvert
     return _cache[text]
 
-def bevelrect(draw, (x1, y1, x2, y2), color):
+def bevelrect(draw, _tup0, color):
+    x1, y1, x2, y2 = _tup0
     if x2 <= x1:
         x2 = x1 + 1   # minimal width
     elif x2 >= x1 + 4:

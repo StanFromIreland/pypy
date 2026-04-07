@@ -1127,6 +1127,8 @@ class IndexVar(AbstractValue):
             return False
         return self.constant_diff(other) == 0
 
+    __hash__ = object.__hash__
+
     def __ne__(self, other):
         return not self.__eq__(other)
 
@@ -1206,6 +1208,8 @@ class MemoryRef(object):
             return False
         stride = self.stride()
         return other.index_var.constant_diff(self.index_var) == 0
+
+    __hash__ = object.__hash__
 
     #def __ne__(self, other):
     #    return not self.__eq__(other)

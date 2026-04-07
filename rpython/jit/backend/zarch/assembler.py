@@ -1620,5 +1620,5 @@ for key, value in rop.__dict__.items():
         continue
     methname = 'emit_%s' % key
     if hasattr(AssemblerZARCH, methname):
-        func = getattr(AssemblerZARCH, methname).im_func
+        func = getattr(AssemblerZARCH, methname).__func__
         asm_operations[value] = func

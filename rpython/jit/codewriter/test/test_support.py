@@ -70,7 +70,7 @@ def test_decode_builtin_call_method():
 def test_streq_slice_checknull():
     p1 = llstr("hello world")
     p2 = llstr("wor")
-    func = LLtypeHelpers._ll_4_str_eq_slice_checknull.im_func
+    func = LLtypeHelpers._ll_4_str_eq_slice_checknull.__func__
     assert func(p1, 6, 3, p2) == True
     assert func(p1, 6, 2, p2) == False
     assert func(p1, 5, 3, p2) == False
@@ -79,7 +79,7 @@ def test_streq_slice_checknull():
 def test_streq_slice_nonnull():
     p1 = llstr("hello world")
     p2 = llstr("wor")
-    func = LLtypeHelpers._ll_4_str_eq_slice_nonnull.im_func
+    func = LLtypeHelpers._ll_4_str_eq_slice_nonnull.__func__
     assert func(p1, 6, 3, p2) == True
     assert func(p1, 6, 2, p2) == False
     assert func(p1, 5, 3, p2) == False
@@ -87,7 +87,7 @@ def test_streq_slice_nonnull():
 
 def test_streq_slice_char():
     p1 = llstr("hello world")
-    func = LLtypeHelpers._ll_4_str_eq_slice_char.im_func
+    func = LLtypeHelpers._ll_4_str_eq_slice_char.__func__
     assert func(p1, 6, 3, "w") == False
     assert func(p1, 6, 0, "w") == False
     assert func(p1, 6, 1, "w") == True
@@ -97,7 +97,7 @@ def test_streq_nonnull():
     p1 = llstr("wor")
     p2 = llstr("wor")
     assert p1 != p2
-    func = LLtypeHelpers._ll_2_str_eq_nonnull.im_func
+    func = LLtypeHelpers._ll_2_str_eq_nonnull.__func__
     assert func(p1, p1) == True
     assert func(p1, p2) == True
     assert func(p1, llstr("wrl")) == False
@@ -107,7 +107,7 @@ def test_streq_nonnull():
     py.test.raises(AttributeError, func, llstr(None), p2)
 
 def test_streq_nonnull_char():
-    func = LLtypeHelpers._ll_2_str_eq_nonnull_char.im_func
+    func = LLtypeHelpers._ll_2_str_eq_nonnull_char.__func__
     assert func(llstr("wor"), "x") == False
     assert func(llstr("w"), "x") == False
     assert func(llstr(""), "x") == False
@@ -115,7 +115,7 @@ def test_streq_nonnull_char():
     py.test.raises(AttributeError, func, llstr(None), "x")
 
 def test_streq_checknull_char():
-    func = LLtypeHelpers._ll_2_str_eq_checknull_char.im_func
+    func = LLtypeHelpers._ll_2_str_eq_checknull_char.__func__
     assert func(llstr("wor"), "x") == False
     assert func(llstr("w"), "x") == False
     assert func(llstr(""), "x") == False
@@ -126,7 +126,7 @@ def test_streq_lengthok():
     p1 = llstr("wor")
     p2 = llstr("wor")
     assert p1 != p2
-    func = LLtypeHelpers._ll_2_str_eq_lengthok.im_func
+    func = LLtypeHelpers._ll_2_str_eq_lengthok.__func__
     assert func(p1, p1) == True
     assert func(p1, p2) == True
     assert func(p1, llstr("wrl")) == False

@@ -19,9 +19,9 @@ reverse_dict = dict(map(lambda (x,y): (y,x), test_dict.items()))
 
 def entry_point(argv):
     if argv[1] == 'd':
-        print test_dict[int(argv[2])]
+        print(test_dict[int(argv[2])])
     else:
-        print reverse_dict[argv[2]]
+        print(reverse_dict[argv[2]])
     return 0
 
 # _____ Define and setup target ___

@@ -56,7 +56,7 @@ PASS_OP_ON = OptimizationResult(None, None)
 
 @specialize.memo()
 def have_postprocess(cls):
-    return cls.propagate_postprocess.im_func is not Optimization.propagate_postprocess.im_func
+    return cls.propagate_postprocess.__func__ is not Optimization.propagate_postprocess.__func__
 
 class Optimization(object):
     next_optimization = None

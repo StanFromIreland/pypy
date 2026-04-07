@@ -399,7 +399,7 @@ def _emit_pending_constants(self):
 
     for is_float, const_pool in [(True, float_const_pool),
                                  (False, int_const_pool)]:
-        for inst_pos, pair in const_pool.iteritems():
+        for inst_pos, pair in const_pool.items():
             reg, const_value = pair
 
             # Emit the constant at the end.

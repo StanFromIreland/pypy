@@ -2,7 +2,7 @@
 This module defines all the SpaceOperations used in rpython.flowspace.
 """
 
-import __builtin__
+import builtins
 import __future__
 import operator
 import sys
@@ -63,8 +63,7 @@ class HLOperationMeta(type):
             cls._transform = DoubleDispatchRegistry()
 
 
-class HLOperation(SpaceOperation):
-    __metaclass__ = HLOperationMeta
+class HLOperation(SpaceOperation, metaclass=HLOperationMeta):
     pure = False
     can_overflow = False
     dispatch = None  # number of arguments to dispatch on
@@ -653,9 +652,8 @@ class CallOp(HLOperation):
             c = w_callable.value
             if (isinstance(c, (types.BuiltinFunctionType,
                                types.BuiltinMethodType,
-                               types.ClassType,
-                               types.TypeType)) and
-                    c.__module__ in ['__builtin__', 'exceptions']):
+                               type)) and
+                    c.__module__ in ['__builtin__', 'builtins', 'exceptions']):
                 return builtins_exceptions.get(c, [])
         # *any* exception for non-builtins
         return [Exception]
@@ -706,9 +704,9 @@ func2op[type] = op.type
 func2op[operator.truth] = op.bool
 func2op[pow] = op.pow
 func2op[operator.pow] = op.pow
-func2op[__builtin__.iter] = op.iter
+func2op[builtins.iter] = op.iter
 func2op[getattr] = op.getattr
-func2op[__builtin__.next] = op.next
+func2op[builtins.next] = op.next
 
 for fn, oper in func2op.items():
     register_flow_sc(fn)(oper.make_sc())

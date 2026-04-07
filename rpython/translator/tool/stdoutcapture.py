@@ -42,8 +42,8 @@ class Capture:
     def done(self):
         "End capture and return the captured text (stdoutfile, stderrfile)."
         if self.dummy:
-            import cStringIO
-            return cStringIO.StringIO(), cStringIO.StringIO()
+            import io
+            return io.StringIO(), io.StringIO()
         else:
             os.dup2(self.localoutfd, 1)
             os.dup2(self.localerrfd, 2)
@@ -71,5 +71,5 @@ if __name__ == '__main__':
         os.system('echo hello')
     finally:
         fout, ferr = c.done()
-    print('Output:', `fout.read()`)
-    print('Error:', `ferr.read()`)
+    print('Output:', repr(fout.read()))
+    print('Error:', repr(ferr.read()))

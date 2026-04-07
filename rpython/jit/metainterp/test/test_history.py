@@ -100,7 +100,7 @@ class TestZTranslated(StandaloneTests):
             c2 = ConstFloat(longlong.getfloatstorage(n - INFINITY))
             c3 = ConstFloat(longlong.getfloatstorage(12.34))
             if c1.same_constant(c2):
-                print "ok!"
+                print("ok!")
             return 0
 
         t, cbuilder = self.compile(fn)

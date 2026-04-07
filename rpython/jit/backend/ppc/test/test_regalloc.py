@@ -44,6 +44,8 @@ class MockInstruction(object):
         assert isinstance(other, MockInstruction)
         return self.name == other.name and self.args == other.args
 
+    __hash__ = object.__hash__
+
     def __repr__(self):
         return self.__str__()
 

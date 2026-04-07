@@ -266,4 +266,4 @@ FACTORIAL_SOURCE = '''
 
 if __name__ == '__main__':
     code = compile(FACTORIAL_SOURCE)
-    print ','.join([str(ord(c)) for c in code])
+    print(','.join([str(ord(c)) for c in code]))

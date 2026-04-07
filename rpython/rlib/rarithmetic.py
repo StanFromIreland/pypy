@@ -653,8 +653,9 @@ class r_singlefloat(object):
         import struct
         return struct.unpack("f", self._bytes)[0]
 
-    def __nonzero__(self):
+    def __bool__(self):
         raise TypeError("not supported on r_singlefloat instances")
+
 
     def __cmp__(self, other):
         raise TypeError("not supported on r_singlefloat instances")
@@ -683,8 +684,9 @@ class r_longfloat(object):
     def __float__(self):
         return self.value
 
-    def __nonzero__(self):
+    def __bool__(self):
         raise TypeError("not supported on r_longfloat instances")
+
 
     def __cmp__(self, other):
         raise TypeError("not supported on r_longfloat instances")

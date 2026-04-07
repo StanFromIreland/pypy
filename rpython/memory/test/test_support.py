@@ -48,13 +48,13 @@ class TestAddressStack(object):
                  for i in range(3000)]
         ll = AddressStack()
         for i in range(3000):
-            print i
+            print(i)
             ll.append(addrs[i])
         for i in range(3000)[::-1]:
             a = ll.pop()
             assert a == addrs[i]
         for i in range(3000):
-            print i
+            print(i)
             ll.append(addrs[i])
         for i in range(3000)[::-1]:
             a = ll.pop()

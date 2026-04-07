@@ -335,7 +335,7 @@ def test_overrides_are_defaults():
     assert config.b2
     config.b1 = True
     assert not config.b2
-    print config._cfgimpl_value_owners
+    print(config._cfgimpl_value_owners)
 
 def test_overrides_require_as_default():
     descr = OptionDescription("test", "", [
@@ -374,7 +374,7 @@ def test_overrides_dont_change_user_options():
 def test_str():
     descr = make_description()
     c = Config(descr)
-    print c # does not crash
+    print(c) # does not crash
 
 def test_dwim_set():
     descr = OptionDescription("opt", "", [
@@ -410,7 +410,7 @@ def test_more_set():
     assert config.int == 23
 
 def test_optparse_help():
-    import cStringIO
+    import io
     descr = OptionDescription("opt", "", [
         BoolOption("bool1", 'do bool1', default=False, cmdline='--bool1'),
         BoolOption("bool2", 'do bool2', default=False, cmdline='--bool2', negation=False),
@@ -421,7 +421,7 @@ def test_optparse_help():
     ])
     conf = Config(descr)
     parser = to_optparse(conf)
-    out = cStringIO.StringIO()
+    out = io.StringIO()
     parser.print_help(out)
     help = out.getvalue()
     #print help

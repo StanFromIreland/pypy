@@ -45,20 +45,24 @@ def ll_none_hash(_):
 
 class __extend__(pairtype(Repr, NoneRepr)):
 
-    def convert_from_to((r_from, _), v, llops):
+    def convert_from_to(_tup0, v, llops):
+        r_from, _ = _tup0
         return inputconst(Void, None)
 
-    def rtype_is_((robj1, rnone2), hop):
+    def rtype_is_(_tup0, hop):
+        robj1, rnone2 = _tup0
         if hop.s_result.is_constant():
             return hop.inputconst(Bool, hop.s_result.const)
         return rtype_is_None(robj1, rnone2, hop)
 
 class __extend__(pairtype(NoneRepr, Repr)):
 
-    def convert_from_to((_, r_to), v, llops):
+    def convert_from_to(_tup0, v, llops):
+        _, r_to = _tup0
         return inputconst(r_to, None)
 
-    def rtype_is_((rnone1, robj2), hop):
+    def rtype_is_(_tup0, hop):
+        rnone1, robj2 = _tup0
         if hop.s_result.is_constant():
             return hop.inputconst(Bool, hop.s_result.const)
         return rtype_is_None(robj2, rnone1, hop, pos=1)

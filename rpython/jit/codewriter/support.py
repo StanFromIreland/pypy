@@ -687,7 +687,7 @@ def setup_extra_builtin(rtyper, oopspec_name, nb_args, extra=None):
     try:
         wrapper = globals()[name]
     except KeyError:
-        wrapper = getattr(LLtypeHelpers, name).im_func
+        wrapper = getattr(LLtypeHelpers, name).__func__
     if extra is not None:
         wrapper = wrapper(*extra)
     return wrapper

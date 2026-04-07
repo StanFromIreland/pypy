@@ -332,7 +332,7 @@ class CopyStructEntry(ExtRegistryEntry):
                                                      lltype.Signed)
         hop.exception_cannot_occur()
         TP = v_source.concretetype.TO.OF
-        for name, TP in TP._flds.iteritems():
+        for name, TP in TP._flds.items():
             c_name = hop.inputconst(lltype.Void, name)
             v_fld = hop.genop('getinteriorfield', [v_source, v_si, c_name],
                               resulttype=TP)
@@ -353,7 +353,7 @@ def _contains_gcptr(TP):
         if isinstance(TP, lltype.Ptr) and TP.TO._gckind == 'gc':
             return True
         return False
-    for TP in TP._flds.itervalues():
+    for TP in TP._flds.values():
         if _contains_gcptr(TP):
             return True
     return False
@@ -685,7 +685,7 @@ def _fq_patch_class(Cls):
 _fq_patched_classes = set()
 
 class FqTagEntry(ExtRegistryEntry):
-    _about_ = FinalizerQueue._get_tag.im_func
+    _about_ = FinalizerQueue._get_tag
 
     def compute_result_annotation(self, s_fq):
         assert s_fq.is_constant()
@@ -703,7 +703,7 @@ class FqTagEntry(ExtRegistryEntry):
         from rpython.rtyper.rclass import InstanceRepr
         translator = hop.rtyper.annotator.translator
         fq = hop.args_s[0].const
-        graph = translator._graphof(fq.finalizer_trigger.im_func)
+        graph = translator._graphof(fq.finalizer_trigger.__func__)
         InstanceRepr.check_graph_of_del_does_not_call_too_much(hop.rtyper,
                                                                graph)
         hop.exception_cannot_occur()
@@ -779,7 +779,7 @@ def get_rpy_referents(gcref):
     return [_GcRef(x) for x in d if _keep_object(x)]
 
 def _keep_object(x):
-    if isinstance(x, type) or type(x) is types.ClassType:
+    if isinstance(x, type) or isinstance(x, type):
         return False      # don't keep any type
     if isinstance(x, (list, dict, str)):
         return True       # keep lists and dicts and strings
@@ -1388,6 +1388,8 @@ class _ResizableListSupportingRawPtr(list):
 
     def __eq__(self, other):
         return list.__eq__(self.__as_list(), other)
+
+    __hash__ = object.__hash__
     def __ne__(self, other):
         return list.__ne__(self.__as_list(), other)
     def __ge__(self, other):

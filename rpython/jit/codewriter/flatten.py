@@ -44,7 +44,7 @@ class ListOfKind(object):
         return '%s%s' % (self.kind[0].upper(), list(self.content))
     def __iter__(self):
         return iter(self.content)
-    def __nonzero__(self):
+    def __bool__(self):
         return bool(self.content)
     def __eq__(self, other):
         return (isinstance(other, ListOfKind) and

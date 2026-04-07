@@ -11,7 +11,7 @@ from rpython.jit.metainterp.history import AbstractDescr
 
 def format_assembler(ssarepr):
     """For testing: format a SSARepr as a multiline string."""
-    from cStringIO import StringIO
+    from io import StringIO
 
     def repr(x):
         if isinstance(x, Register):

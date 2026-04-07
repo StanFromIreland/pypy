@@ -59,7 +59,7 @@ class TestFinalizerAnalyzer(object):
         def f():
             return A()
 
-        r = self.analyze(f, [], A.__del__.im_func)
+        r = self.analyze(f, [], A.__del__.__func__)
         assert not r
 
     def test_c_call(self):
@@ -108,7 +108,7 @@ class TestFinalizerAnalyzer(object):
         def f():
             A()
 
-        r = self.analyze(f, [], A.__del__.im_func)
+        r = self.analyze(f, [], A.__del__.__func__)
         assert r
 
     def test_must_be_light_finalizer_decorator(self):

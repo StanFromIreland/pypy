@@ -358,7 +358,7 @@ class LoopTest(object):
 
         expected = f(12)
         res = self.meta_interp(f, [12])
-        print res
+        print(res)
         assert res == expected
 
     def test_nested_loops_discovered_by_bridge(self):
@@ -1225,7 +1225,7 @@ class LoopTest(object):
             Cell().value = None
             List().content2 = Int()
             f(l, f1, c_w_none, promoteint)
-            print "=================================================================="
+            print("==================================================================")
             f(l + [l1, l2], f2, c_int, promoteint)
 
         self.meta_interp(main, [True])

@@ -383,7 +383,7 @@ class TestRint(BaseRtypingTest):
                      mod_unpro, mod_ovf, mod_zer, mod_ovf_zer]
 
             for func in funcs:
-                print func
+                print(func)
                 if 'ovf' in func.__name__ and inttype is r_longlong:
                     continue # don't have many llong_*_ovf operations...
                 for x, y in args:

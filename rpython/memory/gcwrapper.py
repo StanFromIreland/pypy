@@ -202,7 +202,7 @@ class GCManagedHeap(object):
         pass
 
     def _get_finalizer_trigger(self, fq):
-        graph = self.translator._graphof(fq.finalizer_trigger.im_func)
+        graph = self.translator._graphof(fq.finalizer_trigger.__func__)
         def ll_trigger():
             try:
                 self.llinterp.eval_graph(graph, [None], recursive=True)

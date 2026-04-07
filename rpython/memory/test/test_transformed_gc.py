@@ -71,7 +71,7 @@ class GCTest(object):
                 continue
             definefunc = getattr(cls, fullname)
             _, name = fullname.split('_', 1)
-            func_fixup = definefunc.im_func(cls)
+            func_fixup = definefunc.__func__(cls)
             cleanup = None
             if isinstance(func_fixup, tuple):
                 func, cleanup, fixup = func_fixup
@@ -82,7 +82,7 @@ class GCTest(object):
             if cleanup:
                 cleanup.__name__ = "clean_%s" % name
 
-            nargs = len(inspect.getargspec(func)[0])
+            nargs = len(inspect.getfullargspec(func)[0])
             name_to_func[name] = len(funcs0)
             if nargs == 2:
                 funcs2.append(func)
@@ -1589,7 +1589,7 @@ class TaggedPointerGCTests(GCTest):
     def test_gettypeid(self):
         func = self.runner("gettypeid")
         res = func([])
-        print res
+        print(res)
 
 
 from rpython.rlib.objectmodel import UnboxedValue

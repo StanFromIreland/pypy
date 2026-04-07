@@ -31,7 +31,8 @@ class AbstractRangeRepr(Repr):
 
 class __extend__(pairtype(AbstractRangeRepr, IntegerRepr)):
 
-    def rtype_getitem((r_rng, r_int), hop):
+    def rtype_getitem(_tup0, hop):
+        r_rng, r_int = _tup0
         if hop.has_implicit_exception(IndexError):
             spec = dum_checkidx
         else:

@@ -86,9 +86,9 @@ class TestParser(object):
 
     def tokenize(self, source):
         # use tokenize module but rewrite tokens slightly
-        import tokenize, cStringIO
+        import tokenize, io
         pos = 0
-        readline = cStringIO.StringIO(source).readline
+        readline = io.StringIO(source).readline
         for token in tokenize.generate_tokens(readline):
             typ, s, (row, col), _, line = token
             row -= 1

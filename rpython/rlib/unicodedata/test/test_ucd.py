@@ -14,7 +14,7 @@ class TestTranslated(BaseRtypingTest):
                 u = unicodedb_5_2_0.lookup("GOTHIC LETTER FAIHU")
                 return u
         res = self.interpret(f, [1])
-        print hex(res)
+        print(hex(res))
         assert res == f(1)
 
     def test_translated_crash(self):

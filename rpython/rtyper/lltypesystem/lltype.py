@@ -90,8 +90,7 @@ def safe_equal(x, y, TLS=TLS):
 class frozendict(dict):
 
     def __hash__(self):
-        items = self.items()
-        items.sort()
+        items = sorted(self.items())
         return hash(tuple(items))
 
 
@@ -147,8 +146,7 @@ class LowLevelType(object):
             pass
         if hash_level >= 3:
             return 0
-        items = self.__dict__.items()
-        items.sort()
+        items = sorted(self.__dict__.items())
         TLS.nested_hash_level = hash_level + 1
         try:
             result = hash((self.__class__,) + tuple(items))
@@ -244,6 +242,8 @@ class Typedef(LowLevelType):
 
     def __eq__(self, other):
         return other == self.OF
+
+    __hash__ = object.__hash__
 
     def __getattr__(self, name):
         return self.OF.get(name)
@@ -1203,11 +1203,12 @@ class _abstract_ptr(object):
     def __hash__(self):
         raise TypeError("pointer objects are not hashable")
 
-    def __nonzero__(self):
+    def __bool__(self):
         try:
             return self._obj is not None
         except DelayedPointer:
             return True    # assume it's not a delayed null
+
 
     # _setobj, _getobj and _obj0 are really _internal_ implementations
     # details of _ptr, use _obj if necessary instead !
@@ -1541,9 +1542,9 @@ class SomePtr(SomeObject):
             return ll_to_annotation(v)
         else:
             if isinstance(v, MethodType):
-                ll_ptrtype = typeOf(v.im_self)
+                ll_ptrtype = typeOf(v.__self__)
                 assert isinstance(ll_ptrtype, (Ptr, InteriorPtr))
-                return SomeLLADTMeth(ll_ptrtype, v.im_func)
+                return SomeLLADTMeth(ll_ptrtype, v.__func__)
             return immutablevalue(v)
     getattr.can_only_throw = []
 
@@ -1596,8 +1597,9 @@ class _interior_ptr(_abstract_ptr):
         self._set_parent(_parent)
         self._set_offsets(_offsets)
 
-    def __nonzero__(self):
+    def __bool__(self):
         raise RuntimeError("do not test an interior pointer for nullity")
+
 
     def _get_obj(self):
         ob = self._parent

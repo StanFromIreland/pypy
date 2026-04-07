@@ -1407,13 +1407,13 @@ for key, value in rop.__dict__.items():
         continue
     method_name = 'prepare_op_%s' % key
     if hasattr(Regalloc, method_name):
-        func = getattr(Regalloc, method_name).im_func
+        func = getattr(Regalloc, method_name).__func__
         regalloc_operations[value] = func
     method_name = 'prepare_guard_op_%s' % key
     if hasattr(Regalloc, method_name):
-        func = getattr(Regalloc, method_name).im_func
+        func = getattr(Regalloc, method_name).__func__
         regalloc_guard_operations[value] = func
     method_name = 'prepare_comp_op_%s' % key
     if hasattr(Regalloc, method_name):
-        func = getattr(Regalloc, method_name).im_func
+        func = getattr(Regalloc, method_name).__func__
         regalloc_comp_operations[value] = func

@@ -14,7 +14,7 @@ def entry_point(argv):
             if not buf: break
             sha.update(buf)
         os.close(fd)
-        print sha.hexdigest(), filename
+        print(sha.hexdigest(), filename)
     return 0
 
 # _____ Define and setup target ___

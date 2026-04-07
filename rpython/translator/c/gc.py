@@ -292,7 +292,7 @@ class FrameworkGcRuntimeTypeInfo_OpaqueNode(BoehmGcRuntimeTypeInfo_OpaqueNode):
 
 class NoneGcPolicy(BoehmGcPolicy):
 
-    gc_startup_code = RefcountingGcPolicy.gc_startup_code.im_func
+    gc_startup_code = RefcountingGcPolicy.gc_startup_code
 
     def compilation_info(self):
         eci = BasicGcPolicy.compilation_info(self)
@@ -451,7 +451,8 @@ class ShadowStackFrameworkGcPolicy(BasicFrameworkGcPolicy):
         from rpython.memory.gctransform import shadowstack
         return shadowstack.ShadowStackFrameworkGCTransformer(translator, gchooks)
 
-    def enter_roots_frame(self, funcgen, (c_gcdata, c_numcolors)):
+    def enter_roots_frame(self, funcgen, _tup0):
+        c_gcdata, c_numcolors = _tup0
         numcolors = c_numcolors.value
         # XXX hard-code the field name here
         gcpol_ss = '%s->gcd_inst_root_stack_top' % funcgen.expr(c_gcdata)

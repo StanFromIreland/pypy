@@ -161,7 +161,7 @@ the candidate desc; the result list is assigned to var or _."""
 
         descs = []
         try:
-            for c in self.translator.annotator.bookkeeper.descs.itervalues():
+            for c in self.translator.annotator.bookkeeper.descs.values():
                 if isinstance(c, kind_cls) and flt(c):
                     descs.append(c)
         except self.GiveUp:
@@ -181,12 +181,12 @@ if obj is a class or ClassDef the class definition graph is shown"""
         if obj is None:
             return
         if hasattr(obj, 'im_func'):
-            obj = obj.im_func
+            obj = obj.__func__
         if isinstance(obj, types.FunctionType):
             page = graphpage.LocalizedCallGraphPage(translator, self._allgraphs(obj))
         elif isinstance(obj, FunctionGraph):
             page = graphpage.FlowGraphPage(translator, [obj])
-        elif isinstance(obj, (type, types.ClassType)):
+        elif isinstance(obj, type):
             classdef = self._getcdef(obj)
             if classdef is None:
                 return
@@ -235,7 +235,7 @@ find a stack frame that has a certain variable (the default is "graph")
             obj = [obj]
         clsdefs = []
         for x in obj:
-            if isinstance(x, (type, types.ClassType)):
+            if isinstance(x, type):
                 cdef = self._getcdef(x)
                 if cdef is None:
                     continue
@@ -251,7 +251,7 @@ find a stack frame that has a certain variable (the default is "graph")
             return
         for cdef in clsdefs:
             try:
-                attrs = [a for a in cdef.attrs.itervalues() if flt(a)]
+                attrs = [a for a in cdef.attrs.values() if flt(a)]
             except self.GiveUp:
                 return
             if attrs:
@@ -312,7 +312,7 @@ the list of the read positions functions is set to var or _."""
         obj = self._getobj(arg)
         if obj is None:
             return
-        if isinstance(obj, (type, types.ClassType)):
+        if isinstance(obj, type):
             obj = self._getcdef(obj)
             if obj is None:
                 return
@@ -363,7 +363,7 @@ show flow graph for function obj, obj can be an expression or a dotted name
         if obj is None:
             return
         if hasattr(obj, 'im_func'):
-            obj = obj.im_func
+            obj = obj.__func__
         if isinstance(obj, types.FunctionType):
             graphs = self._allgraphs(obj)
         elif isinstance(obj, FunctionGraph):
@@ -376,7 +376,7 @@ show flow graph for function obj, obj can be an expression or a dotted name
     def _allgraphs(self, func):
         graphs = {}
         funcdesc = self.translator.annotator.bookkeeper.getdesc(func)
-        for graph in funcdesc._cache.itervalues():
+        for graph in funcdesc._cache.values():
             graphs[graph] = True
         for graph in self.translator.graphs:
             if getattr(graph, 'func', None) is func:
@@ -393,7 +393,7 @@ show localized call-graph for function obj, obj can be an expression or a dotted
         if obj is None:
             return
         if hasattr(obj, 'im_func'):
-            obj = obj.im_func
+            obj = obj.__func__
         if isinstance(obj, types.FunctionType):
             graphs = self._allgraphs(obj)
         elif isinstance(obj, FunctionGraph):

@@ -392,7 +392,7 @@ def _make_execute_list():
             if hasattr(BlackholeInterpreter, name):
                 func = make_execute_function(
                     key.lower(),
-                    getattr(BlackholeInterpreter, name).im_func)
+                    getattr(BlackholeInterpreter, name).__func__)
                 if func is not None:
                     execute[value] = func
                     continue

@@ -38,7 +38,7 @@ class Config(object):
         self.override(overrides)
 
     def override(self, overrides):
-        for name, value in overrides.iteritems():
+        for name, value in overrides.items():
             homeconfig, name = self._cfgimpl_get_home_by_path(name)
             homeconfig.setoption(name, value, 'default')
 
@@ -128,7 +128,7 @@ class Config(object):
 
     def set(self, **kwargs):
         all_paths = [p.split(".") for p in self.getpaths()]
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             key_p = key.split('.')
             candidates = [p for p in all_paths if p[-len(key_p):] == key_p]
             if len(candidates) == 1:
@@ -210,8 +210,7 @@ class Config(object):
 DEFAULT_OPTION_NAME = object()
 
 
-class Option(object):
-    __metaclass__ = extendabletype
+class Option(object, metaclass=extendabletype):
 
     def __init__(self, name, doc, cmdline=DEFAULT_OPTION_NAME):
         self._name = name
@@ -425,8 +424,7 @@ class ArbitraryOption(Option):
         return self.default
 
 
-class OptionDescription(object):
-    __metaclass__ = extendabletype
+class OptionDescription(object, metaclass=extendabletype):
 
     cmdline = None
 

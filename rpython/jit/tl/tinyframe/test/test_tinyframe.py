@@ -81,7 +81,7 @@ class TestCompile(object):
 
     def test_print(self):
         import sys
-        from StringIO import StringIO
+        from io import StringIO
 
         code = compile('''
         name:

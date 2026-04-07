@@ -8,6 +8,7 @@ import py
 
 from rpython.tool.uid import uid, Hashable
 from rpython.tool.sourcetools import PY_IDENTIFIER, nice_repr_for_func
+import sys
 
 
 class FunctionGraph(object):
@@ -333,7 +334,7 @@ class Variable(object):
 
     def set_name(self, name, nr):
         # this is for wrapper.py which wants to assign a name explicitly
-        self._name = intern(name)
+        self._name = sys.intern(name)
         self._nr = nr
 
     def foldable(self):
@@ -362,8 +363,8 @@ class Constant(Hashable):
     def foldable(self):
         to_check = self.value
         if hasattr(to_check, 'im_self'):
-            to_check = to_check.im_self
-        if isinstance(to_check, (type, types.ClassType, types.ModuleType)):
+            to_check = to_check.__self__
+        if isinstance(to_check, (type, types.ModuleType)):
             # classes/types/modules are assumed immutable
             return True
         if (hasattr(to_check, '__class__') and
@@ -434,7 +435,7 @@ def const(obj):
 class SpaceOperation(object):
 
     def __init__(self, opname, args, result, offset=-1):
-        self.opname = intern(opname)      # operation name
+        self.opname = sys.intern(opname)      # operation name
         self.args = list(args)    # mixed list of var/const
         self.result = result      # either Variable or Constant instance
         self.offset = offset      # offset in code string

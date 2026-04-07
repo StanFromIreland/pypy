@@ -533,10 +533,10 @@ class VRefTests(object):
         exctx = ExCtx()
         @dont_look_inside
         def escapexy(xy):
-            print 'escapexy:', xy.n
+            print('escapexy:', xy.n)
             if xy.n % 5 == 0:
                 vr = exctx.vr
-                print 'accessing via vr:', vr()
+                print('accessing via vr:', vr())
                 assert vr() is xy
         #
         def f(n):

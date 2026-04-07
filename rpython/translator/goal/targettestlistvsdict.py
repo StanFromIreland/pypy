@@ -20,9 +20,9 @@ test_dict = dict(map(lambda x: (x, str(x)), numbers))
 
 def entry_point(argv):
     if argv[1] == 'd':
-        print test_dict[int(argv[2])]
+        print(test_dict[int(argv[2])])
     else:
-        print test_list[int(argv[2])]
+        print(test_list[int(argv[2])])
     return 0
 
 # _____ Define and setup target ___

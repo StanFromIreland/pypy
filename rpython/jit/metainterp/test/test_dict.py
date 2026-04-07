@@ -429,7 +429,7 @@ class DictTests:
             d[1] = n
             d2 = self.newdict()
             d2[3] = n + 2
-            for key, value in d2.iteritems():
+            for key, value in d2.items():
                 d[key] = value
             return d[3]
         res = self.interp_operations(fn, [0])

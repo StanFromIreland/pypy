@@ -192,8 +192,9 @@ class fakearenaaddress(llmemory.fakeaddress):
             return self.offset - other.offset
         return NotImplemented
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
+
 
     def compare_with_fakeaddr(self, other):
         other = other._fixup()
@@ -232,6 +233,8 @@ class fakearenaaddress(llmemory.fakeaddress):
         else:
             return llmemory.fakeaddress.__eq__(self, other)
         return self.arena is arena and self.offset == offset
+
+    __hash__ = object.__hash__
 
     def __lt__(self, other):
         if isinstance(other, fakearenaaddress):

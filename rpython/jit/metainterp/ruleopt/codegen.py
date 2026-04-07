@@ -319,7 +319,7 @@ class Codegen(parse.Visitor):
         for rule in ast.rules:
             bindings = {}
             intbound_bindings = {}
-            for path, name in ast.bindings.iteritems():
+            for path, name in ast.bindings.items():
                 _add_binding(rule.pattern, path, name)
             self.bindings = bindings
             self.intbound_bindings = intbound_bindings

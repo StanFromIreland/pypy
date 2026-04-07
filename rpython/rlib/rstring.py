@@ -986,12 +986,14 @@ class UnicodeBuilderEntry(BaseEntry, ExtRegistryEntry):
 
 class __extend__(pairtype(SomeStringBuilder, SomeStringBuilder)):
 
-    def union((obj1, obj2)):
+    def union(_tup0):
+        obj1, obj2 = _tup0
         return obj1
 
 class __extend__(pairtype(SomeUnicodeBuilder, SomeUnicodeBuilder)):
 
-    def union((obj1, obj2)):
+    def union(_tup0):
+        obj1, obj2 = _tup0
         return obj1
 
 class PrebuiltStringBuilderEntry(ExtRegistryEntry):

@@ -11,10 +11,10 @@ def entry_point(argv):
     minors = GC_HOOKS_STATS.minors
     steps = GC_HOOKS_STATS.steps
     collects = GC_HOOKS_STATS.collects
-    print 'GC hooks statistics'
-    print '    gc-minor:        ', minors
-    print '    gc-collect-step: ', steps
-    print '    gc-collect:      ', collects
+    print('GC hooks statistics')
+    print('    gc-minor:        ', minors)
+    print('    gc-collect-step: ', steps)
+    print('    gc-collect:      ', collects)
     return ret
 
 def get_gchooks():

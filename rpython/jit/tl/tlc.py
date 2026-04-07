@@ -45,6 +45,8 @@ class ClassDescr(object):
         "NOT_RPYTHON"
         return self.__dict__ == other.__dict__
 
+    __hash__ = object.__hash__
+
 class ConstantPool(object):
 
     def __init__(self):
@@ -68,6 +70,8 @@ class ConstantPool(object):
     def __eq__(self, other):
         "NOT_RPYTHON"
         return self.__dict__ == other.__dict__
+
+    __hash__ = object.__hash__
 
 class Class(object):
 

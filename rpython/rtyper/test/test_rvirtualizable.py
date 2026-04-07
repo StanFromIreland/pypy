@@ -307,7 +307,7 @@ class TestVirtualizable(BaseRtypingTest):
             return a.meth1(100)
 
         t, typer, graph = self.gengraph(f, [int])
-        g_graph = t._graphof(A.g.im_func)
+        g_graph = t._graphof(A.g.__func__)
 
         self.replace_force_virtualizable(typer, [g_graph])
 

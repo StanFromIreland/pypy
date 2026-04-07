@@ -10,6 +10,8 @@ def cache_file_path(c_files, eci, cachename):
     cache_dir = cache_root.join(cachename).ensure(dir=1)
     filecontents = [c_file.read() for c_file in c_files]
     key = repr((filecontents, eci, platform.key()))
+    if isinstance(key, str):
+        key = key.encode('utf-8')
     hash = md5(key).hexdigest()
     return cache_dir.join(hash)
 
@@ -42,7 +44,10 @@ def build_executable_cache(c_files, eci, ignore_errors=False):
 def try_atomic_write(path, data):
     path = str(path)
     tmppath = '%s~%d' % (path, os.getpid())
-    f = open(tmppath, 'wb')
+    if isinstance(data, bytes):
+        f = open(tmppath, 'wb')
+    else:
+        f = open(tmppath, 'w')
     f.write(data)
     f.close()
     try:

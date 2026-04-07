@@ -1455,7 +1455,7 @@ for key, value in rop.__dict__.items():
         continue
     methname = 'emit_%s' % key
     if hasattr(AssemblerPPC, methname):
-        func = getattr(AssemblerPPC, methname).im_func
+        func = getattr(AssemblerPPC, methname).__func__
         operations[value] = func
 
 class BridgeAlreadyCompiled(Exception):

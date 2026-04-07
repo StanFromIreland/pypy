@@ -13,58 +13,70 @@ from rpython.rtyper.lltypesystem.llmemory import (
 
 
 class __extend__(pairtype(SomeAddress, SomeAddress)):
-    def union((s_addr1, s_addr2)):
+    def union(_tup0):
+        s_addr1, s_addr2 = _tup0
         return SomeAddress()
 
-    def sub((s_addr1, s_addr2)):
+    def sub(_tup0):
+        s_addr1, s_addr2 = _tup0
         from rpython.annotator.bookkeeper import getbookkeeper
         if s_addr1.is_null_address() and s_addr2.is_null_address():
             return getbookkeeper().immutablevalue(0)
         return SomeInteger()
 
-    def is_((s_addr1, s_addr2)):
+    def is_(_tup0):
+        s_addr1, s_addr2 = _tup0
         assert False, "comparisons with is not supported by addresses"
 
 class __extend__(pairtype(SomeTypedAddressAccess, SomeTypedAddressAccess)):
-    def union((s_taa1, s_taa2)):
+    def union(_tup0):
+        s_taa1, s_taa2 = _tup0
         assert s_taa1.type == s_taa2.type
         return s_taa1
 
 class __extend__(pairtype(SomeTypedAddressAccess, SomeInteger)):
-    def getitem((s_taa, s_int)):
+    def getitem(_tup0):
+        s_taa, s_int = _tup0
         return lltype_to_annotation(s_taa.type)
     getitem.can_only_throw = []
 
-    def setitem((s_taa, s_int), s_value):
+    def setitem(_tup0, s_value):
+        s_taa, s_int = _tup0
         assert annotation_to_lltype(s_value) is s_taa.type
     setitem.can_only_throw = []
 
 
 class __extend__(pairtype(SomeAddress, SomeInteger)):
-    def add((s_addr, s_int)):
+    def add(_tup0):
+        s_addr, s_int = _tup0
         return SomeAddress()
 
-    def sub((s_addr, s_int)):
+    def sub(_tup0):
+        s_addr, s_int = _tup0
         return SomeAddress()
 
 class __extend__(pairtype(SomeAddress, SomeImpossibleValue)):
     # need to override this specifically to hide the 'raise UnionError'
     # of pairtype(SomeAddress, SomeObject).
-    def union((s_addr, s_imp)):
+    def union(_tup0):
+        s_addr, s_imp = _tup0
         return s_addr
 
 class __extend__(pairtype(SomeImpossibleValue, SomeAddress)):
     # need to override this specifically to hide the 'raise UnionError'
     # of pairtype(SomeObject, SomeAddress).
-    def union((s_imp, s_addr)):
+    def union(_tup0):
+        s_imp, s_addr = _tup0
         return s_addr
 
 class __extend__(pairtype(SomeAddress, SomeObject)):
-    def union((s_addr, s_obj)):
+    def union(_tup0):
+        s_addr, s_obj = _tup0
         raise UnionError(s_addr, s_obj)
 
 class __extend__(pairtype(SomeObject, SomeAddress)):
-    def union((s_obj, s_addr)):
+    def union(_tup0):
+        s_obj, s_addr = _tup0
         raise UnionError(s_obj, s_addr)
 
 
@@ -92,14 +104,16 @@ class SomeLLADTMeth(SomeObject):
 
 
 class __extend__(pairtype(SomePtr, SomePtr)):
-    def union((p1, p2)):
+    def union(_tup0):
+        p1, p2 = _tup0
         if p1.ll_ptrtype != p2.ll_ptrtype:
             raise UnionError(p1, p2)
         return SomePtr(p1.ll_ptrtype)
 
 class __extend__(pairtype(SomePtr, SomeInteger)):
 
-    def getitem((p, int1)):
+    def getitem(_tup0):
+        p, int1 = _tup0
         example = p.ll_ptrtype._example()
         try:
             v = example[0]
@@ -108,7 +122,9 @@ class __extend__(pairtype(SomePtr, SomeInteger)):
         return ll_to_annotation(v)
     getitem.can_only_throw = []
 
-    def setitem((p, int1), s_value):   # just doing checking
+    def setitem(_tup0, s_value):
+        p, int1 = _tup0
+        # just doing checking
         example = p.ll_ptrtype._example()
         if example[0] is not None:  # ignore Void s_value
             v_lltype = annotation_to_lltype(s_value)
@@ -116,19 +132,23 @@ class __extend__(pairtype(SomePtr, SomeInteger)):
     setitem.can_only_throw = []
 
 class __extend__(pairtype(SomePtr, SomeObject)):
-    def union((p, obj)):
+    def union(_tup0):
+        p, obj = _tup0
         raise UnionError(p, obj)
 
-    def getitem((p, obj)):
+    def getitem(_tup0):
+        p, obj = _tup0
         raise AnnotatorError("ptr %r getitem index not an int: %r" %
                              (p.ll_ptrtype, obj))
 
-    def setitem((p, obj), s_value):
+    def setitem(_tup0, s_value):
+        p, obj = _tup0
         raise AnnotatorError("ptr %r setitem index not an int: %r" %
                              (p.ll_ptrtype, obj))
 
 class __extend__(pairtype(SomeObject, SomePtr)):
-    def union((obj, p2)):
+    def union(_tup0):
+        obj, p2 = _tup0
         return pair(p2, obj).union()
 
 

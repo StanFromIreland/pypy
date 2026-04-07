@@ -100,7 +100,7 @@ class TestGenerator:
         GeneratorIterator = graph._tweaked_func._generator_next_method_of_
         assert hasattr(GeneratorIterator, 'next')
         #
-        graph_next = build_flow(GeneratorIterator.next.im_func)
+        graph_next = build_flow(GeneratorIterator.next.__func__)
         join_blocks(graph_next)
         if option.view:
             graph_next.show()

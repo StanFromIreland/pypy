@@ -8,7 +8,7 @@ actually implementing argv of the executable.
 """
 
 def debug(msg):
-    print "debug:", msg
+    print("debug:", msg)
 
 # __________  Entry point  __________
 

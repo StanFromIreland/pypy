@@ -37,7 +37,7 @@ import distutils.errors
 
 if platform.system() == 'Windows':
     if sys.version_info[0] < 3:
-        import _winreg as winreg
+        import winreg as winreg
         from itertools import ifilterfalse as filterfalse
     else:
         import winreg

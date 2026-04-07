@@ -1413,7 +1413,7 @@ class BranchUpdater(PPCAssembler):
         self.assemble()
         self.copy_to_raw_memory(addr)
         
-    def assemble(self, dump=os.environ.has_key('PYPY_DEBUG')):
+    def assemble(self, dump='PYPY_DEBUG' in os.environ):
         insns = self.assemble0(dump)
         for i in insns:
             self.emit(i)
@@ -1437,7 +1437,7 @@ def make_operations():
         opname = key.lower()
         methname = "emit_%s" % opname
         if hasattr(PPCBuilder, methname):
-            oplist[val] = getattr(PPCBuilder, methname).im_func
+            oplist[val] = getattr(PPCBuilder, methname).__func__
         else:
             oplist[val] = not_implemented
     return oplist

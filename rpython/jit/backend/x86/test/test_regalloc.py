@@ -70,7 +70,7 @@ class BaseTestCheckRegistersExplicitly(test_regalloc_integration.BaseTestRegallo
 
     def teardown_method(self, meth):
         for l in self.log:
-            print l
+            print(l)
 
     def filter_log_moves(self):
         return [entry for entry in self.log if entry.name == "mov"]

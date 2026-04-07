@@ -19,9 +19,9 @@ def test_gen_simple_assignments():
 
 def gen_check(input):
     for _, dst, src in input:
-        print 'input:', dst, src
+        print('input:', dst, src)
     result = ' '.join(gen_assignments(input))
-    print result
+    print(result)
     result = result.replace('{ int', '').replace('}', '').strip()
     d = {}
     for _, dst, src in input:

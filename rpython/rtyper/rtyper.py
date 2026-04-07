@@ -112,7 +112,7 @@ class RPythonTyper(object):
 
     def lltype_to_classdef_mapping(self):
         result = {}
-        for (classdef, _), repr in self.instance_reprs.iteritems():
+        for (classdef, _), repr in self.instance_reprs.items():
             result[repr.lowleveltype] = classdef
         return result
 
@@ -595,8 +595,8 @@ class RPythonTyper(object):
         # hack for bound methods
         if hasattr(ll_function, 'im_func'):
             bk = self.annotator.bookkeeper
-            args_s.insert(0, bk.immutablevalue(ll_function.im_self))
-            ll_function = ll_function.im_func
+            args_s.insert(0, bk.immutablevalue(ll_function.__self__))
+            ll_function = ll_function.__func__
         helper_graph = annotate_lowlevel_helper(self.annotator,
                                                 ll_function, args_s,
                                                 policy=self.lowlevel_ann_policy)
@@ -866,9 +866,9 @@ class LowLevelOpList(list):
             # hack for bound methods
             if hasattr(ll_function, 'im_func'):
                 bk = rtyper.annotator.bookkeeper
-                args_s.insert(0, bk.immutablevalue(ll_function.im_self))
-                newargs_v.insert(0, inputconst(Void, ll_function.im_self))
-                ll_function = ll_function.im_func
+                args_s.insert(0, bk.immutablevalue(ll_function.__self__))
+                newargs_v.insert(0, inputconst(Void, ll_function.__self__))
+                ll_function = ll_function.__func__
 
         graph = annotate_lowlevel_helper(rtyper.annotator, ll_function, args_s,
                                          rtyper.lowlevel_ann_policy)

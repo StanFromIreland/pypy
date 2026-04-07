@@ -20,7 +20,7 @@ def run_external(t, use_search):
         repl, expected = t[3:5]
     else:
         assert len(t) == 3
-    print 'trying:', t
+    print('trying:', t)
     try:
         obj = get_code(pattern)
     except re.error:

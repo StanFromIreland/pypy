@@ -219,7 +219,7 @@ class World(object):
                 assert pieces[2].startswith('+')
                 if len(pieces) == 3:
                     continue     # empty line
-                baseaddr = long(pieces[1][1:], 16) & 0xFFFFFFFFL
+                baseaddr = long(pieces[1][1:], 16) & 0xFFFFFFFF
                 offset = int(pieces[2][1:])
                 addr = baseaddr + offset
                 data = pieces[3].replace(':', '').decode('hex')
@@ -237,7 +237,7 @@ class World(object):
                 pieces = line.split(None, 3)
                 assert pieces[1].startswith('@')
                 assert pieces[2].startswith('+')
-                baseaddr = long(pieces[1][1:], 16) & 0xFFFFFFFFL
+                baseaddr = long(pieces[1][1:], 16) & 0xFFFFFFFF
                 offset = int(pieces[2][1:])
                 addr = baseaddr + offset
                 self.logentries[addr] = pieces[3]
@@ -410,11 +410,11 @@ if __name__ == '__main__':
         print(__doc__, file=sys.stderr)
         sys.exit(2)
     #
-    import cStringIO
+    import io
     from rpython.tool import logparser
     log1 = logparser.parse_log_file(sys.argv[1])
     text1 = logparser.extract_category(log1, catprefix='jit-backend-dump')
-    f = cStringIO.StringIO()
+    f = io.StringIO()
     f.writelines(text1)
     f.seek(0)
     del log1, text1

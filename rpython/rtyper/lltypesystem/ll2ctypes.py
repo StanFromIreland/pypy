@@ -32,7 +32,7 @@ from rpython.rtyper import raddress
 from rpython.translator.platform import platform
 from array import array
 try:
-    from thread import _local as tlsobject
+    from _thread import _local as tlsobject
 except ImportError:
     class tlsobject(object):
         pass
@@ -660,7 +660,7 @@ class _fixedsizedarray_mixin(_parentable_mixin):
 
     def __getattr__(self, field_name):
         if hasattr(self, '_items'):
-            obj = lltype._fixedsizearray.__getattr__.im_func(self, field_name)
+            obj = lltype._fixedsizearray.__getattr__.__func__(self, field_name)
             return obj
         else:
             cobj = getattr(self._storage.contents, field_name)
@@ -673,14 +673,14 @@ class _fixedsizedarray_mixin(_parentable_mixin):
         else:
             cobj = lltype2ctypes(value)
             if hasattr(self, '_items'):
-                lltype._fixedsizearray.__setattr__.im_func(self, field_name, cobj)
+                lltype._fixedsizearray.__setattr__.__func__(self, field_name, cobj)
             else:
                 setattr(self._storage.contents, field_name, cobj)
 
 
     def getitem(self, index, uninitialized_ok=False):
         if hasattr(self, '_items'):
-            obj = lltype._fixedsizearray.getitem.im_func(self,
+            obj = lltype._fixedsizearray.getitem.__func__(self,
                                      index, uninitialized_ok=uninitialized_ok)
             return obj
         else:
@@ -689,7 +689,7 @@ class _fixedsizedarray_mixin(_parentable_mixin):
     def setitem(self, index, value):
         cobj = lltype2ctypes(value)
         if hasattr(self, '_items'):
-            lltype._fixedsizearray.setitem.im_func(self, index, value)
+            lltype._fixedsizearray.setitem.__func__(self, index, value)
         else:
             setattr(self, 'item%d' % index, cobj)
 
@@ -836,8 +836,7 @@ def lltype2ctypes(llobj, normalize=True):
                 # XXX a temporary workaround for comparison of lltype.FuncType
                 key = llobj._obj.__dict__.copy()
                 key['_TYPE'] = repr(key['_TYPE'])
-                items = key.items()
-                items.sort()
+                items = sorted(key.items())
                 key = tuple(items)
                 if key in _all_callbacks:
                     return _all_callbacks[key]
@@ -1380,7 +1379,7 @@ def get_ctypes_trampoline(FUNCTYPE, cfunc, natural_arity=-1):
             # e.g. test_llhelper_error_value)
             evalue._ll2ctypes_c_result = cres
             _callback_exc_info = None
-            raise etype, evalue, etb
+            raise etype(evalue).with_traceback(etb)
         return ctypes2lltype(RESULT, cres)
     return invoke_via_ctypes
 
@@ -1507,6 +1506,8 @@ class _lladdress(long):
         if not isinstance(other, (int, long)):
             other = cast_adr_to_int(other)
         return intmask(other) == self.intval
+
+    __hash__ = object.__hash__
 
     def __ne__(self, other):
         return not self == other

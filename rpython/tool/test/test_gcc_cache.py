@@ -1,5 +1,5 @@
 import sys
-import cStringIO
+import io
 import py
 from rpython.tool.udir import udir
 from rpython.translator.tool.cbuild import ExternalCompilationInfo
@@ -36,9 +36,9 @@ def test_gcc_exec():
     assert build_executable_cache([f], eci2) == "42\n"
     f.write("#error BOOM\n")
     err = py.test.raises(CompilationError, build_executable_cache, [f], eci2)
-    print '<<<'
-    print err
-    print '>>>'
+    print('<<<')
+    print(err)
+    print('>>>')
 
 def test_gcc_ask():
     f = localudir.join("y.c")
@@ -77,7 +77,7 @@ def test_gcc_ask_doesnt_log_errors():
     eci = ExternalCompilationInfo()
     oldstderr = sys.stderr
     try:
-        sys.stderr = capture = cStringIO.StringIO()
+        sys.stderr = capture = io.StringIO()
         py.test.raises(CompilationError, try_compile_cache, [f], eci)
     finally:
         sys.stderr = oldstderr
@@ -89,7 +89,7 @@ def test_execute_code_ignore_errors():
     eci = ExternalCompilationInfo()
     oldstderr = sys.stderr
     try:
-        sys.stderr = capture = cStringIO.StringIO()
+        sys.stderr = capture = io.StringIO()
         py.test.raises(CompilationError, build_executable_cache,
                        [f], eci, True)
     finally:
@@ -110,7 +110,7 @@ def test_execute_code_show_runtime_error():
         eci = ExternalCompilationInfo()
         oldstderr = sys.stderr
         try:
-            sys.stderr = capture = cStringIO.StringIO()
+            sys.stderr = capture = io.StringIO()
             output = build_executable_cache([f], eci, True)
         finally:
             sys.stderr = oldstderr

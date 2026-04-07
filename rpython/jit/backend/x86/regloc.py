@@ -570,7 +570,8 @@ class LocationCodeBuilder(object):
         self.MOV_ri(X86_64_SCRATCH_REG.value, addr)
         return (X86_64_SCRATCH_REG.value, 0)
 
-    def _fix_static_offset_64_m(self, (basereg, static_offset)):
+    def _fix_static_offset_64_m(self, _tup0):
+        basereg, static_offset = _tup0
         # For cases where an AddressLoc has the location_code 'm', but
         # where the static offset does not fit in 32-bits.  We have to fall
         # back to the X86_64_SCRATCH_REG.  Returns a new location encoded

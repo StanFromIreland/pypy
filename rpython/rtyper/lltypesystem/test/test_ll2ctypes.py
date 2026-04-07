@@ -563,7 +563,7 @@ class TestLL2Ctypes(object):
         def my_compar(p1, p2):
             p1 = rffi.cast(SIGNEDPTR, p1)
             p2 = rffi.cast(SIGNEDPTR, p2)
-            print 'my_compar:', p1[0], p2[0]
+            print('my_compar:', p1[0], p2[0])
             return rffi.cast(rffi.INT, cmp(p1[0], p2[0]))
 
         qsort(rffi.cast(rffi.VOIDP, a),
@@ -572,8 +572,8 @@ class TestLL2Ctypes(object):
               llhelper(lltype.Ptr(CMPFUNC), my_compar))
 
         for i in range(10):
-            print a[i],
-        print
+            print(a[i], end=' ')
+        print()
         lst.sort()
         for i in range(10):
             assert a[i] == lst[i]
@@ -1073,7 +1073,7 @@ class TestLL2Ctypes(object):
         graph = a.translator.graphs[0]
         op = graph.startblock.operations[-1]
         assert op.opname == 'direct_call'
-        assert op.args[0].value._obj._callable == LLHelpers.ll_stritem.im_func
+        assert op.args[0].value._obj._callable == LLHelpers.ll_stritem.__func__
         assert op.args[1].value == LLHelpers
         assert op.args[3].value == -2
 

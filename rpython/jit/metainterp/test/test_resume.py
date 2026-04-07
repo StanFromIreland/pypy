@@ -422,6 +422,8 @@ class FakeBuiltObject(object):
     def __eq__(self, other):
         return (self.__class__ == other.__class__ and
                 self.__dict__ == other.__dict__)
+
+    __hash__ = object.__hash__
     def __repr__(self):
         return 'FakeBuiltObject(%s)' % (
             ', '.join(['%s=%r' % item for item in self.__dict__.items()]))
@@ -525,6 +527,8 @@ class FakeFrame(object):
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
+
+    __hash__ = object.__hash__
 
     def __ne__(self, other):
         return self.__dict__ != other.__dict__
@@ -883,6 +887,8 @@ class ResumeDataFakeReader(ResumeDataBoxReader):
         class Whatever:
             def __eq__(self, other):
                 return True
+
+            __hash__ = object.__hash__
         def enumerate_vars(callback_i, callback_r, callback_f):
                 # preserve indentation
                 index = 0

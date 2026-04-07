@@ -482,9 +482,9 @@ class DefinedConstantDouble(CConfigEntry):
 
     def build_result(self, info, config_result):
         if info["defined"]:
-            data = [chr(info["value_%d" % (i,)]) for i in range(8)]
+            data = bytes([info["value_%d" % (i,)] for i in range(8)])
             # N.B. This depends on IEEE 754 being implemented.
-            return struct.unpack("d", ''.join(data))[0]
+            return struct.unpack("d", data)[0]
         return None
 
 class DefinedConstantString(CConfigEntry):
@@ -510,7 +510,7 @@ class DefinedConstantString(CConfigEntry):
         if info["defined"]:
             string = ''
             d = 0
-            while info.has_key('value_%d' % d):
+            while 'value_%d' % d in info:
                 string += chr(info['value_%d' % d])
                 d += 1
             return string
@@ -710,7 +710,7 @@ def fixup_ctype(fieldtype, fieldname, expected_size_and_sign):
                     return ctype
     if isinstance(fieldtype, lltype.FixedSizeArray):
         size, _ = expected_size_and_sign
-        return lltype.FixedSizeArray(fieldtype.OF, size/_sizeof(fieldtype.OF))
+        return lltype.FixedSizeArray(fieldtype.OF, size//_sizeof(fieldtype.OF))
     raise TypeError("conflict between translating python and compiler field"
                     " type %r for symbol %r, expected size+sign %r" % (
                         fieldtype, fieldname, expected_size_and_sign))

@@ -28,12 +28,12 @@ class FieldListAccessor(object):
         assert type(fields) is dict
         self.TYPE = TYPE
         self.fields = fields
-        for x in fields.itervalues():
+        for x in fields.values():
             assert isinstance(x, ImmutableRanking)
 
     def all_immutable_fields(self):
         result = set()
-        for key, value in self.fields.iteritems():
+        for key, value in self.fields.items():
             if value in (IR_IMMUTABLE, IR_IMMUTABLE_ARRAY):
                 result.add(key)
         return result
@@ -47,8 +47,9 @@ class ImmutableRanking(object):
         self.name = name
         self.is_immutable = is_immutable
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.is_immutable
+
 
     def __repr__(self):
         return '<%s>' % self.name
@@ -220,7 +221,7 @@ class ClassRepr(Repr):
         return r_subclass.getruntime(self.lowleveltype)
 
     def convert_const(self, value):
-        if not isinstance(value, (type, types.ClassType)):
+        if not isinstance(value, type):
             raise TyperError("not a class: %r" % (value,))
         bk = self.rtyper.annotator.bookkeeper
         return self.convert_desc(bk.getdesc(value))
@@ -498,8 +499,7 @@ class InstanceRepr(Repr):
             fields['__class__'] = 'typeptr', get_type_repr(self.rtyper)
         else:
             # instance attributes
-            attrs = self.classdef.attrs.items()
-            attrs.sort()
+            attrs = sorted(self.classdef.attrs.items())
             myllfields = []
             for name, attrdef in attrs:
                 if not attrdef.readonly:
@@ -746,8 +746,7 @@ class InstanceRepr(Repr):
                 inputconst(lltype.Signed, 0), llops)
         # initialize instance attributes from their defaults from the class
         if self.classdef is not None:
-            flds = self.allinstancefields.keys()
-            flds.sort()
+            flds = sorted(self.allinstancefields.keys())
             for fldname in flds:
                 if fldname == '__class__':
                     continue
@@ -773,7 +772,7 @@ class InstanceRepr(Repr):
         if value is None:
             return self.null_instance()
         if isinstance(value, types.MethodType):
-            value = value.im_self   # bound method -> instance
+            value = value.__self__   # bound method -> instance
         bk = self.rtyper.annotator.bookkeeper
         try:
             classdef = bk.getuniqueclassdef(value.__class__)
@@ -1033,7 +1032,8 @@ class InstanceRepr(Repr):
 
 
 class __extend__(pairtype(InstanceRepr, InstanceRepr)):
-    def convert_from_to((r_ins1, r_ins2), v, llops):
+    def convert_from_to(_tup0, v, llops):
+        r_ins1, r_ins2 = _tup0
         # which is a subclass of which?
         if r_ins1.classdef is None or r_ins2.classdef is None:
             basedef = None
@@ -1054,7 +1054,8 @@ class __extend__(pairtype(InstanceRepr, InstanceRepr)):
         else:
             return NotImplemented
 
-    def rtype_is_((r_ins1, r_ins2), hop):
+    def rtype_is_(_tup0, hop):
+        r_ins1, r_ins2 = _tup0
         if r_ins1.gcflavor != r_ins2.gcflavor:
             # obscure logic, the is can be true only if both are None
             v_ins1, v_ins2 = hop.inputargs(
@@ -1105,7 +1106,8 @@ def fishllattr(inst, name, default=_missing):
                              (lltype.typeOf(widest), name))
     return default
 
-def attr_reverse_size((_, T)):
+def attr_reverse_size(_tup0):
+    _, T = _tup0
     # This is used to sort the instance or class attributes by decreasing
     # "likely size", as reported by rffi.sizeof(), to minimize padding
     # holes in C.  Fields should first be sorted by name, just to minimize
@@ -1115,7 +1117,7 @@ def attr_reverse_size((_, T)):
     from rpython.rtyper.lltypesystem.rffi import sizeof
     try:
         return -sizeof(T)
-    except StandardError:
+    except Exception:
         return None
 
 # ____________________________________________________________

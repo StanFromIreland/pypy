@@ -31,6 +31,8 @@ class MockInstr(object):
                 and self.name == other.name
                 and self.args == other.args
                 and self.kwargs == other.kwargs)
+
+    __hash__ = object.__hash__
 mi = MockInstr
 
 

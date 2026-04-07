@@ -16,8 +16,8 @@ def capturing(func, *args, **kwds):
     class MyDebugLog:
         def debug_print(self, *args):
             for arg in args:
-                print >> log_stream, arg,
-            print >> log_stream
+                print(arg, end=' ', file=log_stream)
+            print(file=log_stream)
 
         def debug_start(self, *args):
             pass

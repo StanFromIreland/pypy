@@ -24,7 +24,7 @@ def entry_point(argv):
     b = lltype.malloc(TP, size, zero=False)
     for i in range(size):
         a[i] = i
-    print longername(a, b, size)
+    print(longername(a, b, size))
     return 0
 
 # _____ Define and setup target ___

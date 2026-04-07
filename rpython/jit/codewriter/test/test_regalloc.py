@@ -263,10 +263,10 @@ class TestRegAlloc:
                 raise FooError(n)
             return lltype.nullptr(llmemory.GCREF.TO)
         def foo(e):
-            print "hello"
+            print("hello")
             return e
         def bar(e):
-            print "world"
+            print("world")
             return e
         def f(n, kref):
             kref2 = bar(kref)

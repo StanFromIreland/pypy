@@ -62,8 +62,8 @@ class TestDirectLexer(object):
         names = ["IF", "ELSE", "WHILE", "COLON", "WHITE"]
         l = self.get_lexer(rexs, names, ["WHITE"])
         info = py.test.raises(deterministic.LexerError, l.tokenize, "if if if: a else while")
-        print dir(info)
-        print info.__class__
+        print(dir(info))
+        print(info.__class__)
         exc = info.value
         assert exc.input[exc.source_pos.i] == "a"
 
@@ -75,10 +75,10 @@ class TestDirectLexer(object):
         l = self.get_lexer(rexs, names, ["WHITE"])
         s = "if if if: else while"
         tokens = list(l.get_runner(s, eof=True))
-        print tokens
+        print(tokens)
         assert tokens[-1] == Token("EOF", "EOF", SourcePos(len(s), 0, len(s)))
         tokens = l.tokenize(s, eof=True)
-        print tokens
+        print(tokens)
         assert tokens[-1] == Token("EOF", "EOF", SourcePos(len(s), 0, len(s)))
 
     def test_position(self):
@@ -137,7 +137,7 @@ class TestSourcePos(object):
     def test_copy(self):
         base = SourcePos(1, 2, 3)
         attributes = {'i':4, 'lineno': 5, 'columnno': 6}
-        for attr, new_val in attributes.iteritems():
+        for attr, new_val in attributes.items():
             copy = base.copy()
             assert base==copy
             setattr(copy, attr, new_val)    # change one attribute
@@ -147,7 +147,7 @@ class TestToken(object):
     def test_copy(self):
         base = Token('test', 'spource', SourcePos(1,2,3))
         attributes = {'name': 'xxx', 'source': 'yyy', 'source_pos': SourcePos(4,5,6)}
-        for attr, new_val in attributes.iteritems():
+        for attr, new_val in attributes.items():
             copy = base.copy()
             assert base==copy
             setattr(copy, attr, new_val)    # change one attribute

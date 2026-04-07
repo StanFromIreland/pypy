@@ -166,8 +166,7 @@ class ClassDefPage(GraphPage):
 
         def writecdef(cdef):
             lines = [cdef.name, '']
-            attrs = cdef.attrs.items()
-            attrs.sort()
+            attrs = sorted(cdef.attrs.items())
 
             def writeadefs(prefix, classattrs):
                 for name, attrdef in attrs:
@@ -301,7 +300,7 @@ class TranslatorPage(BaseTranslatorPage):
         if len(graphs) > huge:
             assert graphs, "no graph to show!"
             graphs = [center_graph or graphs[0]]
-            LocalizedCallGraphPage.do_compute.im_func(self, dotgen, graphs)
+            LocalizedCallGraphPage.do_compute.__func__(self, dotgen, graphs)
             return
 
         blocked_graphs = self.get_blocked_graphs(graphs)

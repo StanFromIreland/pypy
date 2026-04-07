@@ -9,6 +9,7 @@ This module contains functions that can read and write Python values in a binary
 
 import types
 from _codecs import utf_8_decode, utf_8_encode
+import sys
 
 try:
     intern
@@ -374,7 +375,7 @@ class _Unmarshaller:
 
     def load_interned(self):
         n = self.r_long()
-        ret = intern(self._read(n))
+        ret = sys.intern(self._read(n))
         self._stringtable.append(ret)
         return ret
     dispatch[TYPE_INTERNED] = load_interned
@@ -590,7 +591,7 @@ class _FastUnmarshaller:
 
     def load_interned(self):
         n = _r_long(self)
-        ret = intern(_read(self, n))
+        ret = sys.intern(_read(self, n))
         self._stringtable.append(ret)
         return ret
     dispatch[TYPE_INTERNED] = load_interned

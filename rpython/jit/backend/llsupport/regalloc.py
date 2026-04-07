@@ -325,8 +325,9 @@ class RegBindingsDict(object):
     def iteritems(self):
         return self.regman.reg_bindings_iteritems()
 
-    def __nonzero__(self):
+    def __bool__(self):
         assert False, '__nonzero__ is not rpython'
+
 
 class RegBindingsIterItems(object):
     def __init__(self, rm):
@@ -1058,7 +1059,7 @@ class LifetimeManager(object):
         else:
             if longevity:
                 # old interface for tests
-                for box, lifetime in longevity.iteritems():
+                for box, lifetime in longevity.items():
                     self[box] = lifetime
         # dictionary maps register to FixedRegisterPositions
         self.fixed_register_use = {}

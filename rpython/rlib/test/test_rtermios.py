@@ -47,12 +47,12 @@ class TestLLTermios(object):
         from rpython.rlib import rtermios
         import os, errno
         def runs_tcgetattr():
-            fd = os.open('.', 0, 0777)
+            fd = os.open('.', 0, 0o777)
             try:
                 rtermios.tcgetattr(fd)
             except OSError as e:
                 assert e.errno == errno.ENOTTY
-                print "ok"
+                print("ok")
 
         fn = compile(runs_tcgetattr, [], backendopt=False)
         self.run(fn, "ok")
@@ -70,7 +70,7 @@ class TestLLTermios(object):
             time.sleep(.1)
             tp = rtermios.tcgetattr(2)
             assert tp[5] == f
-            print "ok"
+            print("ok")
 
         fn = compile(runs_tcsetattr, [], backendopt=False)
         self.run(fn, "ok")
@@ -83,7 +83,7 @@ class TestLLTermios(object):
             rtermios.tcdrain(2)
             rtermios.tcflush(2, rtermios.TCIOFLUSH)
             rtermios.tcflow(2, rtermios.TCOON)
-            print "ok"
+            print("ok")
 
         fn = compile(runs_tcall, [], backendopt=False)
         self.run(fn, "ok")

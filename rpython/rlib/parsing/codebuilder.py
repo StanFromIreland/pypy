@@ -47,13 +47,15 @@ class Codebuilder(object):
         self.blocks = []
         return result
 
-    def restore_code(self, (blocks, code)):
+    def restore_code(self, _tup0):
+        blocks, code = _tup0
         result = self.blocks, self.code
         self.code = code
         self.blocks = blocks
         return result
 
-    def add_code(self, (blocks, code)):
+    def add_code(self, _tup0):
+        blocks, code = _tup0
         self.code += [(depth + len(self.blocks), line) for depth, line in code]
         self.blocks += blocks
  

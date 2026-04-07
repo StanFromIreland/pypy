@@ -896,7 +896,7 @@ class BaseTestBridges(BaseTest):
             assert expected == 'RETRACE'
             return
 
-        print '\n'.join([str(o) for o in bridge.operations])
+        print('\n'.join([str(o) for o in bridge.operations]))
         expected = self.parse(expected)
         self.assert_equal(bridge, expected)
 

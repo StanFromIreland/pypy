@@ -4,7 +4,7 @@ from __future__ import print_function
 import sys
 import collections
 import types
-import __builtin__
+import builtins as __builtin__
 
 from rpython.tool.error import source_lines
 from rpython.rlib import rstackovf
@@ -865,6 +865,7 @@ class FlowContext(object):
         w_value = op.getattr(w_obj, w_attributename).eval(self)
         self.pushvalue(w_value)
     LOOKUP_METHOD = LOAD_ATTR
+    LOAD_METHOD = LOAD_ATTR
 
     def LOAD_DEREF(self, varindex):
         cell = self.closure[varindex]
@@ -1220,6 +1221,8 @@ class FlowSignal(Exception):
 
     def __eq__(self, other):
         return type(other) is type(self) and other.args == self.args
+
+    __hash__ = object.__hash__
 
 
 class Return(FlowSignal):

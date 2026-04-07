@@ -106,5 +106,7 @@ class intaddr(object):
         return '<intaddr 0x%x>' % (self.intval & (sys.maxint*2+1),)
     def __eq__(self, other):
         return isinstance(other, intaddr) and self.intval == other.intval
+
+    __hash__ = object.__hash__
     def __ne__(self, other):
         return not self.__eq__(other)

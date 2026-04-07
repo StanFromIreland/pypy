@@ -227,14 +227,14 @@ class TestBadCase:
 
     def test_break_cycles(self):
         result = list(break_cycles(self.edges, self.edges))
-        print len(result)
+        print(len(result))
         assert result
 
     def test_break_cycles_v(self):
         result = list(break_cycles_v(self.edges, self.edges))
         assert len(set(result)) == self.NUM
         assert len(result) == self.NUM
-        print len(result)
+        print(len(result))
         assert result
 
     def test_find_roots(self):
@@ -257,8 +257,7 @@ class TestRandom:
         for comp in result:
             vertices += comp
         vertices.sort()
-        expected = edges.keys()
-        expected.sort()
+        expected = sorted(edges.keys())
         assert vertices == expected
 
     @given(edges())
@@ -266,7 +265,7 @@ class TestRandom:
         # mostly a "does not crash" kind of test
         result = list(break_cycles_v(edges, edges))
         # assert is_acyclic(): included in break_cycles_v() itself
-        print len(result), 'vertices removed'
+        print(len(result), 'vertices removed')
 
     @given(edges())
     def test_find_roots(self, edges):

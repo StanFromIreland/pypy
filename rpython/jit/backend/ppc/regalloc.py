@@ -369,7 +369,7 @@ class Regalloc(BaseRegalloc, VectorRegalloc):
         frame_depth = self.fm.get_frame_depth()
         gcmap = allocate_gcmap(self.assembler, frame_depth,
                                r.JITFRAME_FIXED_SIZE)
-        for box, loc in self.rm.reg_bindings.iteritems():
+        for box, loc in self.rm.reg_bindings.items():
             if loc in forbidden_regs:
                 continue
             if box.type == REF and self.rm.is_still_alive(box):
@@ -1072,5 +1072,5 @@ for key, value in rop.__dict__.items():
         continue
     methname = 'prepare_%s' % key
     if hasattr(Regalloc, methname):
-        func = getattr(Regalloc, methname).im_func
+        func = getattr(Regalloc, methname).__func__
         oplist[value] = func

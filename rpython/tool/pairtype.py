@@ -14,7 +14,8 @@ methods whose 'self' is a pair of objects instead of just one:
 
     class __extend__(pairtype(X, Y)):
         attribute = 42
-        def method((x, y), other, arguments):
+        def method(_tup0, other, arguments):
+            x, y = _tup0
             ...
 
     pair(x, y).attribute

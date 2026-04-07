@@ -298,19 +298,22 @@ def effectinfo_from_writeanalyze(effects, cpu,
         write_descrs_arrays = []
         write_descrs_interiorfields = []
 
-        def add_struct(descrs_fields, (_, T, fieldname)):
+        def add_struct(descrs_fields, _tup0):
+            _, T, fieldname = _tup0
             T = T.TO
             if consider_struct(T, fieldname):
                 descr = cpu.fielddescrof(T, fieldname)
                 descrs_fields.append(descr)
 
-        def add_array(descrs_arrays, (_, T)):
+        def add_array(descrs_arrays, _tup0):
+            _, T = _tup0
             ARRAY = T.TO
             if consider_array(ARRAY):
                 descr = cpu.arraydescrof(ARRAY)
                 descrs_arrays.append(descr)
 
-        def add_interiorfield(descrs_interiorfields, (_, T, fieldname)):
+        def add_interiorfield(descrs_interiorfields, _tup0):
+            _, T, fieldname = _tup0
             T = T.TO
             if not isinstance(T, lltype.Array):
                 return # let's not consider structs for now
@@ -516,7 +519,8 @@ def compute_bitstrings(all_descrs):
         # numbering the descrs that are seen in many EffectInfos.  If instead,
         # by lack of chance, such a descr had a high number, then all these
         # EffectInfos' bitstrings would need to store the same high number.
-        def size_of_both_sets((d, r, w)):
+        def size_of_both_sets(_tup0):
+            d, r, w = _tup0
             return len(r) + len(w)
         all_sets.sort(key=size_of_both_sets, reverse=True)
 
